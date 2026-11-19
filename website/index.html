@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Tutor: tutoring from students who just aced it</title>
+  <meta name="description" content="Book a vetted student tutor for primary or secondary school in Singapore, from S$20 an hour. Grades checked by a person, no agency fee, booked in three steps." />
+  <meta name="theme-color" content="#0B1519" />
+  <meta property="og:title" content="Student Tutor" />
+  <meta property="og:description" content="Learn it from someone who just did. Vetted student tutors from S$20 an hour." />
+  <meta property="og:image" content="./img/hero.jpg" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B1519'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%236FE3D2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%236FE3D2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%236FE3D2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="preload" as="image" href="./img/hero.jpg" fetchpriority="high" />
+</head>
+<body>
+  <img class="stage-poster" src="./img/hero.jpg" alt="" aria-hidden="true" fetchpriority="high" />
+  <canvas id="stage" aria-hidden="true"></canvas>
+  <div class="stage-dim" aria-hidden="true"></div>
+  <div class="stage-load" aria-hidden="true"></div>
+
+  <header class="bar">
+    <a class="brand" href="#top" aria-label="Student Tutor, back to top">
+      <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Student Tutor</span>
+    </a>
+    <nav class="bar__nav" aria-label="Main">
+      <a href="#trust">Safety</a>
+      <a class="btn btn--primary btn--small" href="#tutors">Teach with us</a>
+      <a class="btn btn--primary btn--small" href="#book">Book a tutor</a>
+    </nav>
+  </header>
+
+  <main id="page">
+    <section id="story" aria-label="What Student Tutor is">
+      <div class="beat beat--left" id="top">
+        <h1>Tutoring from students who just aced it.</h1>
+        <p>Vetted student tutors for primary and secondary school, from S$20 an hour. Book a first lesson in three steps.</p>
+        <div class="beat__actions">
+          <a class="btn btn--primary" href="#book">Book a tutor</a>
+        </div>
+      </div>
+      <div class="beat beat--right">
+        <h2>Checked by a person, not an algorithm.</h2>
+        <p>We compare every tutor's grades with their report card. Tutors under 18 need a parent's written consent before they teach.</p>
+      </div>
+      <div class="beat beat--left">
+        <h2>Same syllabus. Recent exams. Explained the way kids get it.</h2>
+        <p>Your child's tutor sat the same papers a year or two ago, so they remember which topics trip students up.</p>
+      </div>
+      <div class="beat beat--right">
+        <h2>A fair price, shown before you book.</h2>
+        <p>Every tutor's hourly rate is on their profile. There is no agency fee on top.</p>
+      </div>
+      <div class="beat beat--left">
+        <h2>Book a first lesson in under a minute.</h2>
+        <p>Pick the subject, the tutor and a time. That's it.</p>
+        <div class="beat__actions">
+          <a class="btn btn--primary" href="#book">Book a tutor</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="impact" aria-labelledby="impact-h">
+      <h2 id="impact-h">Good help with schoolwork, without the agency bill.</h2>
+      <dl class="impact__rates">
+        <div><dt>Primary school</dt><dd><span class="impact__num">S$20</span> an hour, from</dd></div>
+        <div><dt>Secondary school</dt><dd><span class="impact__num">S$30</span> an hour, from</dd></div>
+        <div><dt>Agency fee</dt><dd><span class="impact__num">S$0</span> on every lesson</dd></div>
+      </dl>
+      <p class="impact__note">Rates shown are starting prices. Each tutor sets their own, and you see it before you book.</p>
+    </section>
+
+    <section id="book" class="book stage-cover" aria-labelledby="book-h">
+      <div class="book__intro" id="how">
+        <h2 id="book-h">Book a first lesson</h2>
+        <p>Three steps. You can change anything before you confirm.</p>
+        <ol class="steps" aria-label="Booking steps">
+          <li class="steps__item is-current" data-step-dot="1"><span class="steps__dot" aria-hidden="true"></span><span>Subject and level</span></li>
+          <li class="steps__arc" aria-hidden="true"><svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 20 Q50 -6 98 20" /></svg></li>
+          <li class="steps__item" data-step-dot="2"><span class="steps__dot" aria-hidden="true"></span><span>Choose a tutor</span></li>
+          <li class="steps__arc" aria-hidden="true"><svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 20 Q50 -6 98 20" /></svg></li>
+          <li class="steps__item" data-step-dot="3"><span class="steps__dot" aria-hidden="true"></span><span>Pick a time</span></li>
+        </ol>
+      </div>
+
+      <form class="book__panel" id="booking" novalidate>
+        <fieldset class="step is-active" data-step="1">
+          <legend>What does your child need help with?</legend>
+          <div class="field">
+            <span class="field__label" id="subj-l">Subject</span>
+            <div class="chips" role="radiogroup" aria-labelledby="subj-l" data-name="subject">
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Maths">Maths</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Science">Science</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="English">English</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Chinese">Chinese</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="level">Level</label>
+            <select id="level" name="level">
+              <option value="">Choose a level</option>
+              <optgroup label="Primary">
+                <option>Primary 1</option><option>Primary 2</option><option>Primary 3</option>
+                <option>Primary 4</option><option>Primary 5</option><option>Primary 6</option>
+              </optgroup>
+              <optgroup label="Secondary">
+                <option>Secondary 1</option><option>Secondary 2</option><option>Secondary 3</option>
+                <option>Secondary 4</option><option>Secondary 5</option>
+              </optgroup>
+            </select>
+          </div>
+          <div class="field">
+            <span class="field__label" id="mode-l">Where</span>
+            <div class="chips" role="radiogroup" aria-labelledby="mode-l" data-name="mode">
+              <button type="button" class="chip" role="radio" aria-checked="true" data-value="Online">Online</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="In person">In person, in a public place</button>
+            </div>
+          </div>
+          <p class="error" role="alert" hidden></p>
+          <div class="step__nav"><button type="button" class="btn btn--primary" data-next>Show tutors</button></div>
+        </fieldset>
+
+        <fieldset class="step" data-step="2">
+          <legend>Choose a tutor</legend>
+          <p class="step__hint">Sample profiles while we prepare for launch.</p>
+          <div class="tutors" role="radiogroup" aria-label="Tutors"></div>
+          <p class="error" role="alert" hidden></p>
+          <div class="step__nav">
+            <button type="button" class="btn btn--quiet" data-back>Back</button>
+            <button type="button" class="btn btn--primary" data-next>Choose a time</button>
+          </div>
+        </fieldset>
+
+        <fieldset class="step" data-step="3">
+          <legend>Pick a time for the first lesson</legend>
+          <div class="field">
+            <span class="field__label" id="day-l">Day</span>
+            <div class="chips chips--days" role="radiogroup" aria-labelledby="day-l" data-name="day"></div>
+          </div>
+          <div class="field">
+            <span class="field__label" id="time-l">Time</span>
+            <div class="chips" role="radiogroup" aria-labelledby="time-l" data-name="time">
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="4:00 pm">4:00 pm</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="5:30 pm">5:30 pm</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="7:00 pm">7:00 pm</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="8:30 pm">8:30 pm</button>
+            </div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label class="field__label" for="pname">Your name</label>
+              <input id="pname" name="name" autocomplete="name" />
+            </div>
+            <div class="field">
+              <label class="field__label" for="phone">WhatsApp number</label>
+              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8123 4567" />
+            </div>
+          </div>
+          <div class="summary" aria-live="polite"></div>
+          <p class="error" role="alert" hidden></p>
+          <div class="step__nav">
+            <button type="button" class="btn btn--quiet" data-back>Back</button>
+            <button type="submit" class="btn btn--primary">Book this lesson</button>
+          </div>
+        </fieldset>
+
+        <div class="step step--done" data-step="done" tabindex="-1">
+          <h3>Lesson booked</h3>
+          <p class="done__text"></p>
+          <p class="step__hint">This is a preview of Student Tutor. Bookings are not sent anywhere yet.</p>
+          <div class="step__nav"><button type="button" class="btn btn--quiet" data-restart>Book another lesson</button></div>
+        </div>
+      </form>
+    </section>
+
+    <section id="trust" class="trust" aria-labelledby="trust-h">
+      <h2 id="trust-h">Why parents trust it</h2>
+      <ul class="trust__list">
+        <li><h3>Grades checked by a person</h3><p>A member of our team reads each tutor's report card before their profile goes live.</p></li>
+        <li><h3>Consent for tutors under 18</h3><p>A parent of the tutor signs off before their first lesson.</p></li>
+        <li><h3>Reviews after every lesson</h3><p>Parents rate each lesson, and the reviews stay on the tutor's profile.</p></li>
+        <li><h3>Chat and payment stay in the app</h3><p>No one needs your bank details or a personal number to arrange a lesson.</p></li>
+        <li><h3>Online, or in a public place</h3><p>In-person lessons happen in places like libraries and community centres.</p></li>
+        <li><h3>A report button on every lesson</h3><p>If anything feels wrong, one tap reaches our team.</p></li>
+      </ul>
+    </section>
+
+    <section id="explore" aria-labelledby="explore-h">
+      <div class="explore__drag" aria-label="Drag to spin the lamp"></div>
+      <div class="explore__ui">
+        <h2 id="explore-h">Turn the lamp</h2>
+        <p>Drag to spin it. Change the light to see it at a different hour.</p>
+        <div class="light-modes" role="group" aria-label="Lighting">
+          <button type="button" data-light="desk" aria-pressed="true">Desk lamp</button>
+          <button type="button" data-light="late" aria-pressed="false">Late night</button>
+          <button type="button" data-light="morning" aria-pressed="false">Morning</button>
+        </div>
+      </div>
+      <button type="button" class="hotspot is-hidden" data-hotspot="shade"><span>Tutors who just learned it</span></button>
+      <button type="button" class="hotspot is-hidden" data-hotspot="hinge"><span>Checked by a person</span></button>
+      <button type="button" class="hotspot is-hidden" data-hotspot="base"><span>Safe by design</span></button>
+    </section>
+
+    <section id="tutors" class="tutors-for" aria-labelledby="tutors-h">
+      <div class="tutors-for__head">
+        <h2 id="tutors-h">Teach what you just learned.</h2>
+        <p>For upper-secondary, JC and university students with strong grades in the subjects they teach.</p>
+        <a class="btn btn--primary" href="mailto:hello@studenttutor.example?subject=Tutor%20application">Apply to teach</a>
+      </div>
+      <ul class="tutors-for__list">
+        <li><strong>Paid lessons around your timetable.</strong> You choose the hours, the subjects and your rate.</li>
+        <li><strong>A profile that shows your grades.</strong> Checked results and parents' reviews build up over time.</li>
+        <li><strong>VIA hours on the free track.</strong> Teach families who can't afford lessons and log the hours for school.</li>
+      </ul>
+    </section>
+
+    <section id="free" class="free" aria-labelledby="free-h">
+      <img class="free__img" src="./img/world.jpg" alt="" loading="lazy" />
+      <div class="free__copy">
+        <h2 id="free-h">Free lessons for families who need them.</h2>
+        <p>If paying for tutoring is hard right now, ask for free lessons. Student tutors teach them and log the hours as VIA.</p>
+        <a class="btn btn--quiet" href="mailto:hello@studenttutor.example?subject=Free%20lessons%20request">Ask for free lessons</a>
+      </div>
+    </section>
+
+    <section id="faq" class="faq" aria-labelledby="faq-h">
+      <h2 id="faq-h">Questions parents ask</h2>
+      <div class="faq__list">
+        <details><summary>How do you check a tutor's grades?</summary><p>A person on our team compares the grades on the tutor's profile with their report card or results slip. Profiles go live only after that check.</p></details>
+        <details><summary>Can a tutor be under 18?</summary><p>Yes. Tutors under 18 need written consent from a parent, which we confirm before their first lesson.</p></details>
+        <details><summary>Where do lessons happen?</summary><p>Online, or in person in a public place such as a library or community centre. You choose when you book.</p></details>
+        <details><summary>How much does it cost?</summary><p>Each tutor sets an hourly rate, starting from S$20 for primary and S$30 for secondary. You see the rate before you book, and there is no agency fee.</p></details>
+        <details><summary>What if something goes wrong in a lesson?</summary><p>Every lesson has a report button that reaches our team. Chat and payment stay inside the platform, so you never need to share bank details.</p></details>
+      </div>
+    </section>
+
+    <section class="cta" aria-labelledby="cta-h">
+      <h2 id="cta-h">Find a tutor for this week.</h2>
+      <p>Most first lessons can be booked for the next few days.</p>
+      <a class="btn btn--primary" href="#book">Book a tutor</a>
+    </section>
+
+    <footer class="footer stage-cover">
+      <div class="footer__brand">
+        <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+        <p class="footer__name">Student Tutor</p>
+        <p>Learn it from someone who just did.</p>
+      </div>
+      <address class="footer__contact">
+        <a href="mailto:hello@studenttutor.example">hello@studenttutor.example</a>
+        <a href="https://wa.me/6500000000">WhatsApp +65 0000 0000</a>
+        <a href="https://www.instagram.com/studenttutor">Instagram @studenttutor</a>
+        <span>Singapore</span>
+      </address>
+      <p class="footer__legal">© 2026 Student Tutor</p>
+    </footer>
+  </main>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

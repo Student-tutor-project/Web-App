@@ -1,0 +1,11 @@
+# dependencies and build output
+node_modules/
+website/dist/
+
+# raw generated media (large; the optimized copies live in website/public/)
+assets/
+
+# local tooling
+website/.claude/
+.DS_Store
+Thumbs.db
