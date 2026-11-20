@@ -9,3 +9,7 @@ assets/
 website/.claude/
 .DS_Store
 Thumbs.db
+
+# local environment
+.env
+.env.local
