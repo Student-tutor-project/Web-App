@@ -28,10 +28,60 @@
     </a>
     <nav class="bar__nav" aria-label="Main">
       <a href="#trust">Safety</a>
-      <a class="btn btn--primary btn--small" href="#tutors">Teach with us</a>
-      <a class="btn btn--primary btn--small" href="#book">Book a tutor</a>
+      <button type="button" class="bar__login" data-account="login">Log in</button>
+      <button type="button" class="btn btn--primary btn--small" data-account="signup" data-role="tutor">Teach with us</button>
+      <button type="button" class="btn btn--primary btn--small" data-account="signup" data-role="parent">Book a tutor</button>
     </nav>
   </header>
+
+  <dialog class="account" id="account" aria-labelledby="account-h">
+    <form class="account__form" novalidate>
+      <div class="account__head">
+        <h2 id="account-h">Log in</h2>
+        <button type="button" class="account__close" data-close aria-label="Close">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="account__tabs" role="tablist" aria-label="Account">
+        <button type="button" role="tab" aria-selected="true" data-mode="login">Log in</button>
+        <button type="button" role="tab" aria-selected="false" data-mode="signup">Sign up</button>
+      </div>
+
+      <div class="field" data-only="signup">
+        <span class="field__label" id="role-l">I am a</span>
+        <div class="chips" role="radiogroup" aria-labelledby="role-l" data-name="role">
+          <button type="button" class="chip" role="radio" aria-checked="true" data-value="parent">Parent</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="tutor">Student tutor</button>
+        </div>
+      </div>
+      <div class="field" data-only="signup">
+        <label class="field__label" for="acc-name">Your name</label>
+        <input id="acc-name" name="name" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="acc-email">Email</label>
+        <input id="acc-email" name="email" type="email" inputmode="email" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="acc-pass">Password</label>
+        <input id="acc-pass" name="password" type="password" autocomplete="current-password" />
+        <span class="field__hint" data-only="signup">At least 8 characters.</span>
+      </div>
+
+      <p class="error" role="alert" hidden></p>
+      <button type="submit" class="btn btn--primary account__submit">Log in</button>
+      <p class="account__switch"></p>
+      <p class="step__hint account__note">This is a preview of Student Tutor. Accounts open at launch, and nothing you type here is sent or saved.</p>
+    </form>
+    <div class="account__done" hidden tabindex="-1">
+      <h2 class="account__done-h">Accounts open at launch</h2>
+      <p class="account__done-text"></p>
+      <div class="account__done-actions">
+        <button type="button" class="btn btn--primary" data-goto-book>Book a first lesson</button>
+        <button type="button" class="btn btn--quiet" data-close>Close</button>
+      </div>
+    </div>
+  </dialog>
 
   <main id="page">
     <section id="story" aria-label="What Student Tutor is">

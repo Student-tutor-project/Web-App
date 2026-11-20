@@ -3,6 +3,7 @@ import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { initBooking } from "./booking.js";
+import { initAccount } from "./account.js";
 gsap.registerPlugin(ScrollTrigger);
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";   // the story always starts at beat one
 
@@ -23,6 +24,7 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("cli
 }));
 
 initBooking();
+initAccount({ lenis });
 
 // three.js loads after the page text, so the poster and copy paint first
 const modelUrl = new URLSearchParams(location.search).get("model") || "/model/product.glb";   // ?model= is for the fallback test

@@ -20,6 +20,7 @@ npm run preview    # check the built site over HTTP (never open dist/index.html 
 | `src/stage.js` | The 3D scene: lamp, lights, beam, dust, scroll camera, drag to spin, fallback |
 | `src/particles.js` | Dust motes and glow textures |
 | `src/booking.js` | The booking steps, sample tutors, validation |
+| `src/account.js` | The Log in / Sign up panel (preview only, no backend) |
 | `src/style.css` | Brand tokens (top of file) and all layout |
 | `public/model/product.glb` | The lamp (Tripo H3.1, optimized to 2 MB) |
 | `public/img/hero.jpg` | The poster: shows instantly, and stays if 3D can't run |
@@ -30,6 +31,10 @@ npm run preview    # check the built site over HTTP (never open dist/index.html 
 **Nowhere yet.** The contact details are placeholders, so finishing a booking only shows a
 confirmation on the page, with a line saying bookings are not sent. Nothing is stored or emailed.
 The tutors in step 2 are sample profiles in `src/booking.js`.
+
+**Log in, plus the top bar's Teach with us and Book a tutor** (all open `src/account.js`), work the same way: it checks the fields, then says accounts
+open at launch. Nothing typed there, including passwords, is sent or stored. To make it real, swap the
+submit handler for Supabase Auth (`signInWithPassword` and `signUp`).
 
 To make bookings real, connect the submit handler in `src/booking.js` to a backend (for example
 Supabase) and replace the sample tutors with verified profiles.
