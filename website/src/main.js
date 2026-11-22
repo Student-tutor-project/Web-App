@@ -26,31 +26,9 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("cli
 initBooking();
 initAccount({ lenis });
 
-// three.js loads after the page text, so the poster and copy paint first
-const modelUrl = new URLSearchParams(location.search).get("model") || "/model/product.glb";   // ?model= is for the fallback test
-import("./stage.js").then(({ initStage }) => initStage({
-  modelUrl: modelUrl.startsWith("/") ? `.${modelUrl}` : modelUrl,
-  lenis,
-  modelYaw: -1.57,
-  // The lamp's own light, in model space: the bulb inside the shade and the pool it throws on the desk
-  lamp: { at: [-0.42, 1.36, 0], pool: [-1.25, 0, 0.05], intensity: 32 },
-  beats: [
-    { pos: [-1.7, 1.4, 6.0], look: [-1.2, 1.0, -0.34], yaw: 0 },       // 1 hero three-quarter, lamp right
-    { pos: [2.0, 1.55, 2.1], look: [1.05, 1.15, -0.1], yaw: 0 },       // 2 brass hinge macro, lamp left
-    { pos: [1.8, 0.7, 5.6], look: [-1.14, 1.05, 0.36], yaw: 0.3 },     // 3 low side profile, lamp right
-    { pos: [1.5, 4.2, 8.5], look: [1.67, 0.8, -0.29], yaw: 0.5 },      // 4 wide desk view from above, lamp left and small
-    { pos: [-4.6, 1.3, 3.6], look: [-0.56, 0.95, -0.71], yaw: 0 },     // 5 resting front view, lamp right
-  ],
-  hotspots: [
-    { id: "shade", at: [-0.62, 1.5, 0.2], normal: [-0.8, 0.3, 0.6] },
-    { id: "hinge", at: [0.62, 1.16, 0.1], normal: [0, 0, 1] },
-    { id: "base", at: [-0.08, 0.15, 0.4], normal: [-0.3, 0.5, 1] },
-  ],
-  lightModes: {
-    desk:    { exposure: 1.0,  key: 0.6,  rim: 18, lamp: 32, fog: "#0B1519", wall: 0.85 },
-    late:    { exposure: 0.85, key: 0.12, rim: 30, lamp: 42, fog: "#071014", wall: 0.4 },
-    morning: { exposure: 0.95, key: 0.9,  rim: 8,  lamp: 0,  fog: "#1B2C33", keyColor: "#fff1dc", wall: 1, env: 0.6 },
-  },
-}));
+// three.js loads after the page text, so the poster and copy paint first.
+// ?nostage shows the poster fallback (the same view a phone gets if WebGL fails).
+if (new URLSearchParams(location.search).has("nostage")) document.body.classList.add("stage-failed");
+else import("./room.js").then(({ initRoom }) => initRoom({ lenis }));
 
 if (import.meta.env.DEV) { window.__lenis = lenis; window.__ST = ScrollTrigger; }

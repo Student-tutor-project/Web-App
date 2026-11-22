@@ -1,6 +1,6 @@
 # Student Tutor website
 
-A landing page with a live 3D study lamp (three.js) and a plain, fast three-step booking flow.
+A landing page with a live 3D conference room above a futuristic city (three.js), where visitors take a seat to sign up or log in, and a plain, fast three-step booking flow.
 
 ## Run it
 
@@ -16,15 +16,17 @@ npm run preview    # check the built site over HTTP (never open dist/index.html 
 | Path | What it is |
 |---|---|
 | `index.html` | All page copy and sections |
-| `src/main.js` | Smooth scroll, the booking flow, and every 3D setting: camera beats, hotspots, light modes, lamp light |
-| `src/stage.js` | The 3D scene: lamp, lights, beam, dust, scroll camera, drag to spin, fallback |
-| `src/particles.js` | Dust motes and glow textures |
+| `src/main.js` | Smooth scroll; starts the booking flow, the account panel and the 3D room |
+| `src/room.js` | The 3D room: layout, daylight, the ten chairs, the three choices and their floating signs, the scroll camera beats, the camera glide when a seat is chosen |
+| `src/city.js` | The futuristic city outside the glass, built in code: towers, halo rings, sky bridges, gliding craft, clouds |
+| `src/particles.js` | Dust in the sunlight |
 | `src/booking.js` | The booking steps, sample tutors, validation |
 | `src/account.js` | The Log in / Sign up panel, using Supabase Auth |
 | `src/supabase.js` | The shared Supabase client (reads `.env`) |
 | `src/style.css` | Brand tokens (top of file) and all layout |
-| `public/model/product.glb` | The lamp (Tripo H3.1, optimized to 2 MB) |
-| `public/img/hero.jpg` | The poster: shows instantly, and stays if 3D can't run |
+| `public/model/room.glb` | Table, laptop and window frames, modelled in Blender by `../assets/blender/build_room.py` |
+| `public/model/chair.glb` | The chair (Tripo H3.1 from a generated studio photo, simplified to 76k triangles, 0.7 MB), used for all ten seats |
+| `public/img/hero.jpg` | The poster, a render of the room's first frame: shows instantly, and stays if 3D can't run |
 | `inspect.html` | Dev-only model review page (not part of the build) |
 
 ## Accounts (Supabase Auth)
@@ -62,4 +64,12 @@ Supabase) and replace the sample tutors with verified profiles.
 
 ## Testing the fallback
 
-Open `/?model=/model/missing.glb`: the page should show the hero still with all copy readable.
+Open `/?nostage`: the page shows the poster with all copy readable, and the seat signs are hidden (the bar's buttons still open sign-up and log in).
+
+## Rebuilding the room pieces
+
+```bash
+"C:/Program Files/Blender Foundation/Blender 5.3/blender.exe" -b -P ../assets/blender/build_room.py
+```
+
+The plan for the rest of the site and the hero animation is in `../copy/site-plan.md`.

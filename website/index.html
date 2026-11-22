@@ -5,11 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Student Tutor: tutoring from students who just aced it</title>
   <meta name="description" content="Book a vetted student tutor for primary or secondary school in Singapore, from S$20 an hour. Grades checked by a person, no agency fee, booked in three steps." />
-  <meta name="theme-color" content="#0B1519" />
+  <meta name="theme-color" content="#141C22" />
   <meta property="og:title" content="Student Tutor" />
   <meta property="og:description" content="Learn it from someone who just did. Vetted student tutors from S$20 an hour." />
   <meta property="og:image" content="./img/hero.jpg" />
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230B1519'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%236FE3D2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%236FE3D2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%236FE3D2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141C22'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%23A8D5F2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%23A8D5F2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%23A8D5F2' stroke-width='2'/%3E%3C/svg%3E" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
@@ -84,18 +84,29 @@
 
   <main id="page">
     <section id="story" aria-label="What Student Tutor is">
-      <div class="beat beat--left" id="top">
+      <div class="beat beat--right beat--hero" id="top">
         <h1>Tutoring from students who just aced it.</h1>
-        <p>Vetted student tutors for primary and secondary school, from S$20 an hour. Book a first lesson in three steps.</p>
+        <p>Take a seat to start. Student tutors take the tutor's chair, parents take the chair beside it for their child, and the laptop logs you in.</p>
         <div class="beat__actions">
           <a class="btn btn--primary" href="#book">Book a tutor</a>
+        </div>
+        <div class="seats" role="group" aria-label="Take a seat">
+          <button type="button" class="sign" data-choice="tutor" data-account="signup" data-role="tutor">
+            <span class="sign__card"><span class="sign__title">Tutor's chair</span><span class="sign__sub">Join as a student tutor</span></span>
+          </button>
+          <button type="button" class="sign" data-choice="student" data-account="signup" data-role="parent">
+            <span class="sign__card"><span class="sign__title">Your child's chair</span><span class="sign__sub">Sign up as a parent</span></span>
+          </button>
+          <button type="button" class="sign" data-choice="laptop" data-account="login">
+            <span class="sign__card"><span class="sign__title">Laptop</span><span class="sign__sub">Log in</span></span>
+          </button>
         </div>
       </div>
       <div class="beat beat--right">
         <h2>Checked by a person, not an algorithm.</h2>
         <p>We compare every tutor's grades with their report card. Tutors under 18 need a parent's written consent before they teach.</p>
       </div>
-      <div class="beat beat--left">
+      <div class="beat beat--right">
         <h2>Same syllabus. Recent exams. Explained the way kids get it.</h2>
         <p>Your child's tutor sat the same papers a year or two ago, so they remember which topics trip students up.</p>
       </div>
@@ -103,7 +114,7 @@
         <h2>A fair price, shown before you book.</h2>
         <p>Every tutor's hourly rate is on their profile. There is no agency fee on top.</p>
       </div>
-      <div class="beat beat--left">
+      <div class="beat beat--right">
         <h2>Book a first lesson in under a minute.</h2>
         <p>Pick the subject, the tutor and a time. That's it.</p>
         <div class="beat__actions">
@@ -235,22 +246,6 @@
         <li><h3>Online, or in a public place</h3><p>In-person lessons happen in places like libraries and community centres.</p></li>
         <li><h3>A report button on every lesson</h3><p>If anything feels wrong, one tap reaches our team.</p></li>
       </ul>
-    </section>
-
-    <section id="explore" aria-labelledby="explore-h">
-      <div class="explore__drag" aria-label="Drag to spin the lamp"></div>
-      <div class="explore__ui">
-        <h2 id="explore-h">Turn the lamp</h2>
-        <p>Drag to spin it. Change the light to see it at a different hour.</p>
-        <div class="light-modes" role="group" aria-label="Lighting">
-          <button type="button" data-light="desk" aria-pressed="true">Desk lamp</button>
-          <button type="button" data-light="late" aria-pressed="false">Late night</button>
-          <button type="button" data-light="morning" aria-pressed="false">Morning</button>
-        </div>
-      </div>
-      <button type="button" class="hotspot is-hidden" data-hotspot="shade"><span>Tutors who just learned it</span></button>
-      <button type="button" class="hotspot is-hidden" data-hotspot="hinge"><span>Checked by a person</span></button>
-      <button type="button" class="hotspot is-hidden" data-hotspot="base"><span>Safe by design</span></button>
     </section>
 
     <section id="tutors" class="tutors-for" aria-labelledby="tutors-h">

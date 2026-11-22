@@ -1,15 +1,16 @@
-/* Student Tutor: brand tokens from copy/brand-kit.md */
+/* Student Tutor: brand tokens, taken from the conference room (copy/brand-kit.md, section 6) */
 :root {
-  --bg: #0B1519;
-  --surface: #12212A;
-  --text: #E7EFF0;
-  --muted: #93A8AE;
-  --accent: #6FE3D2;     /* mint: buttons, focus, rim light */
-  --accent-2: #F3B874;   /* amber: the lamplight */
-  --line: #22363F;
+  --bg: #141C22;         /* deep slate: the room's wall in shadow */
+  --surface: #1D2830;    /* panels and the booking form */
+  --wall: #3E4D58;       /* the slate wall itself (3D scene) */
+  --text: #EEF2F3;       /* ceiling white */
+  --muted: #A2B0B8;      /* brushed aluminium */
+  --accent: #A8D5F2;     /* daylight through the glass: buttons, focus, the glow on a chosen seat */
+  --alert: #F4A896;      /* errors only */
+  --line: #2C3A44;
   --font: "Manrope", system-ui, sans-serif;
   --font-head: "Fraunces", Georgia, serif;
-  --tshadow: 0 1px 2px rgba(5,10,12,.9), 0 3px 12px rgba(5,10,12,.7), 0 10px 44px rgba(5,10,12,.7);
+  --tshadow: 0 1px 2px rgba(8,12,15,.9), 0 3px 12px rgba(8,12,15,.7), 0 10px 44px rgba(8,12,15,.7);
   --radius: 6px;
   --gutter: max(16px, 6vw);
 }
@@ -42,11 +43,11 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 /* ---- top bar: "Book a tutor" is always one tap away ---- */
 .bar { position: fixed; z-index: 40; top: 0; left: 0; right: 0; height: 64px; display: flex; align-items: center;
   justify-content: space-between; padding: 0 var(--gutter);
-  background: linear-gradient(to bottom, rgba(11,21,25,.85), rgba(11,21,25,0)); }
+  background: linear-gradient(to bottom, rgba(20,28,34,.92), rgba(20,28,34,.5) 60%, rgba(20,28,34,0)); }
 .brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-family: var(--font-head); font-weight: 600; font-size: 21px; }
 .brand__mark { width: 34px; height: 24px; color: var(--accent); flex: none; }
 .bar__nav { display: flex; align-items: center; gap: 28px; font-size: 16px; }
-.bar__nav a:not(.btn) { text-decoration: none; color: var(--muted); }
+.bar__nav a:not(.btn) { text-decoration: none; color: var(--text); opacity: .85; }
 .bar__nav a:not(.btn):hover { color: var(--text); }
 
 .bar__login { background: none; border: 0; padding: 0 4px; min-height: 44px; color: var(--text); font: 500 16px/1 var(--font); cursor: pointer; }
@@ -55,7 +56,7 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 /* ---- account panel (log in / sign up) ---- */
 .account { width: min(440px, calc(100vw - 32px)); max-height: calc(100vh - 32px); padding: 0; border: 1px solid var(--line); border-radius: 10px;
   background: var(--surface); color: var(--text); }
-.account::backdrop { background: rgba(5,10,12,.72); }
+.account::backdrop { background: rgba(8,12,15,.72); }
 .account__form, .account__done { padding: 28px; display: grid; gap: 20px; }
 .account__form[hidden], .account__done[hidden], .account [hidden] { display: none; }
 .account__head { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
@@ -71,16 +72,16 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 .account__switch { font-size: 14px; color: var(--muted); text-align: center; }
 .account__switch button { background: none; border: 0; padding: 4px; color: var(--accent); font: 700 14px/1 var(--font); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 .account__note { margin-top: 0; text-align: center; }
-.account__done p { color: #C2D1D4; }
+.account__done p { color: #D3DCE0; }
 .account__done-actions { display: flex; flex-wrap: wrap; gap: 12px; }
 
 /* ---- buttons: softly squared, never pills ---- */
 .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px;
   border-radius: var(--radius); font: 700 16px/1 var(--font); text-decoration: none; cursor: pointer;
   border: 1px solid transparent; transition: background-color .2s, color .2s, border-color .2s; }
-.btn--primary { background: var(--accent); color: #062421; }
-.btn--primary:hover { background: #8BEBDD; }
-.btn--quiet { background: transparent; color: var(--text); border-color: rgba(231,239,240,.35); }
+.btn--primary { background: var(--accent); color: #0E2433; }
+.btn--primary:hover { background: #C6E5F8; }
+.btn--quiet { background: transparent; color: var(--text); border-color: rgba(238,242,243,.35); }
 .btn--quiet:hover { border-color: var(--text); }
 .btn--small { min-height: 44px; padding: 0 16px; font-size: 14px; }
 
@@ -89,8 +90,8 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
   padding: 0 var(--gutter); max-width: calc(34rem + 2 * var(--gutter)); gap: 20px; text-shadow: var(--tshadow); }
 .beat--right { margin-left: auto; text-align: right; align-items: flex-end; }
 .beat::before { content: ""; position: absolute; inset: 15% 0; z-index: -1; pointer-events: none;
-  background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(6,12,15,.55), rgba(6,12,15,0) 75%); }
-.beat p { font-size: 21px; color: #D3DFE1; max-width: 30rem; }
+  background: radial-gradient(ellipse 70% 55% at 50% 50%, rgba(12,18,22,.55), rgba(12,18,22,0) 75%); }
+.beat p { font-size: 21px; color: #D3DCE0; max-width: 30rem; }
 .beat__actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px; text-shadow: none; }
 
 /* ---- impact: the price, said plainly ---- */
@@ -102,7 +103,7 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 .impact__rates dt { font-size: 14px; color: var(--muted); }
 .impact__rates dd { margin: 8px 0 0; font-size: 16px; color: var(--muted); }
 .impact__num { display: block; font-family: var(--font-head); font-size: 60px; line-height: 1; color: var(--text); font-weight: 400; margin-bottom: 6px; }
-.impact__rates div:last-child .impact__num { color: var(--accent-2); }
+.impact__rates div:last-child .impact__num { color: var(--accent); }
 .impact__note { grid-column: 2; font-size: 14px; color: var(--muted); }
 
 /* ---- booking: a plain, solid room; nothing moves behind it ---- */
@@ -137,26 +138,26 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 .chip { min-height: 44px; padding: 0 16px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg);
   color: var(--text); font: 500 16px/1 var(--font); cursor: pointer; transition: border-color .2s, background-color .2s; }
 .chip:hover { border-color: var(--muted); }
-.chip[aria-checked="true"] { border-color: var(--accent); background: rgba(111,227,210,.12); }
+.chip[aria-checked="true"] { border-color: var(--accent); background: rgba(168,213,242,.12); }
 select, input { width: 100%; min-height: 48px; padding: 0 14px; border-radius: var(--radius); border: 1px solid var(--line);
   background: var(--bg); color: var(--text); font: 400 16px/1 var(--font); }
 select { appearance: none; background-image: linear-gradient(45deg, transparent 50%, var(--muted) 50%), linear-gradient(135deg, var(--muted) 50%, transparent 50%);
   background-position: calc(100% - 20px) 50%, calc(100% - 14px) 50%; background-size: 6px 6px; background-repeat: no-repeat; padding-right: 40px; }
-input::placeholder { color: #5E7379; }
+input::placeholder { color: #6A7A84; }
 select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var(--accent); }
-.error { color: var(--accent-2); font-size: 16px; font-weight: 500; }
+.error { color: var(--alert); font-size: 16px; font-weight: 500; }
 .tutors { display: grid; gap: 10px; }
 .tutor { display: grid; grid-template-columns: 1fr auto; gap: 4px 16px; text-align: left; padding: 18px 20px; border-radius: 8px;
   border: 1px solid var(--line); background: var(--bg); color: var(--text); font: 400 16px/1.4 var(--font); cursor: pointer; }
 .tutor:hover { border-color: var(--muted); }
-.tutor[aria-checked="true"] { border-color: var(--accent); background: rgba(111,227,210,.08); }
+.tutor[aria-checked="true"] { border-color: var(--accent); background: rgba(168,213,242,.08); }
 .tutor__name { font-weight: 700; font-size: 18px; }
 .tutor__rate { grid-row: 1; grid-column: 2; font-weight: 700; color: var(--text); white-space: nowrap; }
 .tutor__school { grid-column: 1; color: var(--muted); font-size: 14px; }
 .tutor__check { grid-column: 2; grid-row: 2; font-size: 14px; color: var(--accent); white-space: nowrap; text-align: right; }
-.tutor__note { grid-column: 1 / -1; font-size: 14px; color: #C2D1D4; }
+.tutor__note { grid-column: 1 / -1; font-size: 14px; color: #D3DCE0; }
 .tutors__empty { color: var(--muted); }
-.summary p { font-size: 16px; color: #C2D1D4; border-left: 2px solid var(--accent-2); padding-left: 14px; }
+.summary p { font-size: 16px; color: #D3DCE0; border-left: 2px solid var(--accent); padding-left: 14px; }
 .done__text { font-size: 21px; }
 
 /* ---- trust: a two-column list, no cards ---- */
@@ -166,28 +167,29 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
 .trust__list li { display: grid; gap: 8px; padding-top: 18px; border-top: 1px solid var(--line); }
 .trust__list p { color: var(--muted); font-size: 16px; }
 
-/* ---- explore ---- */
-#explore { position: relative; min-height: 140vh; }
-.explore__drag { position: absolute; inset: 0; cursor: grab; touch-action: pan-y; }
-.explore__drag:active { cursor: grabbing; }
-.explore__ui { position: sticky; top: 14vh; padding: 0 var(--gutter); max-width: calc(24rem + 2 * var(--gutter)); pointer-events: none; display: grid; gap: 16px; text-shadow: var(--tshadow); }
-.explore__ui p { color: #D3DFE1; }
-.explore__ui button { pointer-events: auto; }
-.light-modes { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; text-shadow: none; }
-.light-modes button { min-height: 44px; padding: 0 16px; border-radius: var(--radius); border: 1px solid rgba(231,239,240,.3);
-  background: rgba(8,15,18,.6); backdrop-filter: blur(10px); color: var(--text); font: 500 16px/1 var(--font); cursor: pointer; }
-.light-modes button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-.hotspot { position: fixed; left: 0; top: 0; z-index: 20; margin: -9px 0 0 -9px; width: 18px; height: 18px; padding: 0; border-radius: 50%;
-  border: 2px solid var(--accent); background: rgba(11,21,25,.6); transition: opacity .3s; cursor: default; }
-.hotspot span { position: absolute; left: 26px; top: -7px; white-space: nowrap; font: 500 14px/1 var(--font); color: var(--text);
-  background: rgba(8,15,18,.7); backdrop-filter: blur(10px); padding: 8px 10px; border-radius: 6px; }
-.hotspot.is-left span { left: auto; right: 26px; }
-.hotspot.is-hidden { opacity: 0; pointer-events: none; }
+/* ---- the seats: floating signs pinned to the 3D room ---- */
+.sign { position: fixed; left: 0; top: 0; z-index: 20; width: 0; height: 0; padding: 0; border: 0; background: none; color: var(--text);
+  cursor: pointer; opacity: 0; transition: opacity .3s; text-shadow: none; }
+.sign.is-off { pointer-events: none; }
+.sign__card { position: absolute; left: 0; bottom: 34px; transform: translateX(-50%); display: grid; gap: 4px; justify-items: center;
+  min-width: 168px; padding: 12px 16px; border-radius: 8px; border: 1px solid rgba(238,242,243,.28);
+  background: rgba(20,28,34,.72); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  transition: border-color .25s, background-color .25s, transform .25s; white-space: nowrap; }
+.sign__title { font: 700 16px/1.2 var(--font); }
+.sign__sub { font: 400 14px/1.3 var(--font); color: var(--muted); }
+.sign::before { content: ""; position: absolute; left: -0.5px; bottom: 4px; width: 1px; height: 30px; background: linear-gradient(to top, var(--accent), rgba(168,213,242,0)); }
+.sign::after { content: ""; position: absolute; left: -4px; bottom: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+.sign:hover .sign__card, .sign.is-hot .sign__card, .sign:focus-visible .sign__card { border-color: var(--accent); background: rgba(29,40,48,.9); transform: translateX(-50%) translateY(-4px); }
+.sign:hover .sign__sub, .sign.is-hot .sign__sub { color: var(--text); }
+.sign:focus-visible { outline: none; }
+.sign:focus-visible .sign__card { outline: 2px solid var(--accent); outline-offset: 3px; }
+body.is-picking { cursor: pointer; }
+body:not(.stage-ready) .sign, body.stage-failed .sign { display: none; }
 
 /* ---- for student tutors: heading right, list left ---- */
 .tutors-for { padding: 22vh var(--gutter); display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 48px 6vw; align-items: center; }
 .tutors-for__head { grid-column: 2; grid-row: 1; display: grid; gap: 20px; justify-items: start; text-shadow: var(--tshadow); }
-.tutors-for__head p { color: #D3DFE1; }
+.tutors-for__head p { color: #D3DCE0; }
 .tutors-for__head .btn { text-shadow: none; }
 .tutors-for__list { grid-column: 1; grid-row: 1; list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
 .tutors-for__list li { padding: 24px 0; border-bottom: 1px solid var(--line); color: var(--muted); font-size: 18px; }
@@ -198,8 +200,8 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
 .free { position: relative; min-height: 90vh; display: flex; align-items: center; overflow: hidden; background: var(--bg); }
 .free__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 30% 50%; }
 .free__copy { position: relative; padding: 0 var(--gutter); max-width: calc(32rem + 2 * var(--gutter)); display: grid; gap: 20px; justify-items: start; text-shadow: var(--tshadow); }
-.free__copy p { color: #D3DFE1; }
-.free__copy .btn { text-shadow: none; background: rgba(11,21,25,.5); }
+.free__copy p { color: #D3DCE0; }
+.free__copy .btn { text-shadow: none; background: rgba(20,28,34,.5); }
 
 /* ---- FAQ ---- */
 .faq { padding: 22vh var(--gutter) 14vh; display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 4fr); gap: 48px 6vw; }
@@ -216,7 +218,7 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
 /* ---- final call ---- */
 .cta { padding: 18vh var(--gutter) 24vh; display: grid; gap: 20px; justify-items: start; text-shadow: var(--tshadow); }
 .cta h2 { font-size: 72px; max-width: 12ch; line-height: 1.02; }
-.cta p { color: #D3DFE1; font-size: 21px; }
+.cta p { color: #D3DCE0; font-size: 21px; }
 .cta .btn { text-shadow: none; margin-top: 8px; }
 
 /* ---- footer: solid, covers the stage ---- */
@@ -239,7 +241,7 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
   .book__intro, .trust h2 { position: static; }
 }
 
-/* ---- phones: copy at the top, lamp low and centred ---- */
+/* ---- phones: copy at the top, the room below ---- */
 @media (max-width: 768px) {
   body { font-size: 16px; }
   h1 { font-size: 48px; }
@@ -249,12 +251,17 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
   .bar__nav { gap: 8px; }
   .bar__nav .btn--small { padding: 0 12px; }
   .bar__login { font-size: 14px; }
+  .sign__card { min-width: 0; padding: 8px 12px; bottom: 26px; }
+  .sign__sub { display: none; }
+  .sign__title { font-size: 14px; }
+  .sign::before { height: 22px; }
+  body.stage-ready .beat--hero .beat__actions { display: none; }   /* the bar keeps Book a tutor; the seats take this space */
 }
 @media (max-width: 440px) {
   .brand span { display: none; }   /* room for both buttons; the mark stays */
   .beat, .beat--right { justify-content: flex-start; padding-top: 104px; text-align: left; align-items: flex-start; margin-left: 0; max-width: none; gap: 14px; }
   .beat::before { inset: 0 -10% 40% -10%;
-    background: linear-gradient(to bottom, rgba(6,12,15,.82) 0%, rgba(6,12,15,.6) 60%, rgba(6,12,15,0) 100%); }
+    background: linear-gradient(to bottom, rgba(12,18,22,.82) 0%, rgba(12,18,22,.6) 60%, rgba(12,18,22,0) 100%); }
   .stage-poster { object-position: 80% 50%; }
   .beat p { font-size: 18px; }
   .impact { padding: 16vh var(--gutter); }
@@ -268,7 +275,6 @@ select:focus-visible, input:focus-visible { outline-offset: 0; border-color: var
   .field-row { grid-template-columns: minmax(0, 1fr); }
   .trust { padding: 16vh var(--gutter); }
   .trust__list { grid-template-columns: minmax(0, 1fr); gap: 28px; }
-  .explore__ui { top: 88px; }
   .tutors-for, .faq { padding: 16vh var(--gutter); }
   .cta h2 { font-size: 48px; }
   .footer { grid-template-columns: minmax(0, 1fr); padding-top: 14vh; }

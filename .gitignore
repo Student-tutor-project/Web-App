@@ -3,7 +3,9 @@ node_modules/
 website/dist/
 
 # raw generated media (large; the optimized copies live in website/public/)
-assets/
+assets/*
+# ...except the Blender script that builds the room pieces
+!assets/blender/
 
 # local tooling
 website/.claude/

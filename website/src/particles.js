@@ -1,4 +1,4 @@
-// Shared 3D helpers: slow dust motes in the lamplight, and a soft radial glow texture.
+// Shared 3D helpers: slow dust motes drifting in the sunlight, and a soft radial glow texture.
 import * as THREE from "three";
 
 export function radialTexture(color) {

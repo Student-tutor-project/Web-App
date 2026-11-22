@@ -22,15 +22,20 @@ Student Tutor feels like a well-lit study room at night: unhurried, safe, and pr
 ## 6. Color palette
 | Role | Hex | Use |
 |---|---|---|
-| Background | `#0B1519` | Deep night teal, never pure black |
-| Surface | `#12212A` | Cards, the booking panel, inputs |
-| Text | `#E7EFF0` | Headlines and body |
-| Muted text | `#93A8AE` | Supporting copy, labels |
-| Primary accent | `#6FE3D2` | Soft glowing mint: CTAs, focus, rim light, particles |
-| Secondary accent | `#F3B874` | Warm lamplight amber: small highlights, the "light" in the 3D scene |
-| Border / line | `#22363F` | Hairlines, dividers |
+Revised 2026-11-22 to match the conference room (the founder's reference photo). The old teal, mint and amber palette is retired.
 
-One strong accent (mint), used sparingly. Amber is warmth, not decoration.
+| Role | Hex | Use |
+|---|---|---|
+| Background | `#141C22` | Deep slate: the room's wall in shadow, never pure black |
+| Surface | `#1D2830` | The booking panel, the account panel, inputs |
+| Wall | `#3E4D58` | The slate wall in the 3D room |
+| Text | `#EEF2F3` | Ceiling white: headlines and body |
+| Muted text | `#A2B0B8` | Brushed aluminium: supporting copy, labels |
+| Primary accent | `#A8D5F2` | Daylight through the glass: CTAs, focus, the glow under a chosen seat, the city's light lines |
+| Alert | `#F4A896` | Error messages only |
+| Border / line | `#2C3A44` | Hairlines, dividers |
+
+One accent (daylight blue), used sparingly. The alert colour is a signal, never decoration.
 
 ## 7. Typography
 - **Headings:** Fraunces (Google Fonts), weights 400 and 600, soft optical size. A calm, humane serif with real character; reads as trustworthy.
@@ -59,7 +64,7 @@ What a student tutor gets: flexible paid lessons around their timetable, a profi
 - **Free lessons for families who need them:** tutors earn VIA hours giving back.
 
 ## 11. Visual mood
-A quiet study room at night. Low-key light, a single warm lamp glow (amber) against deep teal shadow, with a mint rim light tracing edges. Soft drifting dust motes caught in the light beam, a faint mist. Materials: brushed brass, matte ceramic, frosted glass, paper. Camera: slow, steady, unhurried moves; shallow depth of field. Calm, never busy. High-tech through precision and light, not through neon clutter.
+A daylit conference room high above a futuristic city. Cool, even daylight through a floor-to-ceiling glass wall, a slate-blue wall, white ceiling tiles, dark slate floorboards. Pale grey padded chairs on polished chrome around a long rounded table. Outside: pale glass towers with thin light lines, halo rings and sky bridges, small craft gliding between them, all softened by haze. Dust drifts slowly in the sunlight. Camera: slow, steady glides; nothing jumps. High-tech through precision and light, not neon clutter.
 
 ## 12. Website goal
 **Book a first lesson.** Every section leads to the booking flow, which a parent can finish in three steps on a phone. Secondary goal: student tutors apply to teach.
@@ -77,7 +82,7 @@ All placeholders until the founder confirms:
 3. How booking works: the three steps, shown plainly
 4. The booking flow itself (subject and level, tutor, time, confirm): plain, fast, no 3D behind it
 5. Why parents trust it: verification, safety, reviews
-6. Explore in 3D: a short interactive moment with the centrepiece (drag to spin, light modes)
+6. (Removed 2026-11-22: the lamp's Explore section. Its replacement is planned in `copy/site-plan.md`.)
 7. For student tutors: earn, schedule, VIA hours; apply link
 8. Free track: free lessons for families who need them
 9. Questions parents ask (short FAQ)
@@ -85,24 +90,24 @@ All placeholders until the founder confirms:
 11. Footer with contact details
 
 ## 15. The story
-The 3D centrepiece is a sculptural study lamp: brushed-brass arm, matte ceramic shade, a warm glow inside. It stands for one student lighting the way for the next. (Final object confirmed in Phase 2.)
+Revised 2026-11-22. The 3D centrepiece is a conference room where everyone takes a seat: the tutor's chair at the end of the table in front of the laptop, the child's chair beside it (where a parent signs up), and the laptop itself for logging in. Each has a floating sign; choosing one glides the camera to it and opens the account panel with the right role: Student tutor or Parent.
 
 | Beat | What the visitor sees | Copy on screen | Copy side |
 |---|---|---|---|
-| 1 | Hero three-quarter view of the lamp, glow on, dust drifting in the beam | **Tutoring from students who just aced it.** + the "Book a tutor" button | Left |
-| 2 | Slow macro on the lamp's brass hinge and joint (solid, chunky) | **Checked by a person, not an algorithm.** | Right |
-| 3 | Side profile, the arm reaching forward, light pooling on the desk | **Same syllabus. Recent exams. Explained the way kids get it.** | Left |
-| 4 | Wide view: the lamp small on a desk, the dark room around it | **A fair price, shown before you book.** | Right |
-| 5 | Resting frame: front view, the lamp centred low, glow steady | **Book a first lesson in under a minute.** + the button | Left |
+| 1 | The room as in the reference photo, three signs floating over the tutor's chair, the child's chair and the laptop | **Tutoring from students who just aced it.** + "Take a seat to start" + the button | Right (over the slate wall) |
+| 2 | Turned towards the corner: the glass wall and the city on the left | **Checked by a person, not an algorithm.** | Right |
+| 3 | Closer in: the laptop at the tutor's end of the table | **Same syllabus. Recent exams. Explained the way kids get it.** | Right |
+| 4 | Down the length of the table, the room as a whole | **A fair price, shown before you book.** | Right |
+| 5 | Back to the room, wider and calmer | **Book a first lesson in under a minute.** + the button | Right |
 
-The lamp always stays clear of the copy. Close-ups go to the hinge, base and shade, never to the thin cable or the bulb glass.
+Copy always sits over the slate wall, never over the bright glass. On phones the copy is on top and the seats sit in the lower half.
 
 ## 16. Hero still brief
-One 16:9 frame: the study lamp as the star on the right two-thirds of the frame, three-quarter view, glowing warm amber inside the shade. Deep night-teal room, low-key light, a mint rim light tracing the brass arm and the shade's edge. Fine dust motes drifting through the light beam for drama. The left third is calm, soft shadow where the headline sits. Must still read clearly at thumbnail size. No people, no text, no logos.
+(Superseded 2026-11-22: the poster is now a render of the room at beat 1.) One 16:9 frame: the study lamp as the star on the right two-thirds of the frame, three-quarter view, glowing warm amber inside the shade. Deep night-teal room, low-key light, a mint rim light tracing the brass arm and the shade's edge. Fine dust motes drifting through the light beam for drama. The left third is calm, soft shadow where the headline sits. Must still read clearly at thumbnail size. No people, no text, no logos.
 
 ## 18. Experience
-**Option A: real 3D lamp, rendered live with three.js.** Chosen for interactivity and speed: one optimized model (a few MB) instead of a heavy scroll film, a scene that reacts to the cursor and can be spun, and a clean fallback to the hero still on weak phones. 3D lives only in the story and the Explore section; the booking flow sits on plain, fast panels.
-Story beats: the five camera positions in section 15 (hero three-quarter, hinge macro, side profile, wide desk view, resting front view).
+**Option A: a real 3D room, rendered live with three.js** (revised 2026-11-22; the lamp is retired). The table, laptop and window frames are modelled in Blender (`assets/blender/build_room.py` → `website/public/model/room.glb`); the chair is a Tripo H3.1 model from a generated studio photo (`website/public/model/chair.glb`, 76k triangles, used for all ten seats); the room shell and the futuristic city are built in code (`src/room.js`, `src/city.js`). The poster `img/hero.jpg` is a render of beat 1. 3D lives only in the story; the booking flow sits on plain, fast panels.
+Story beats: the five camera positions in section 15.
 
 ## 17. Design bans
 - No cream or off-white page background

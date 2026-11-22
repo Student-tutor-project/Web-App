@@ -5,7 +5,7 @@ import { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const q = new URLSearchParams(location.search);
-const url = q.get("model") || "/model/product.glb";
+const url = q.get("model") || "/model/chair.glb";
 const yaw = parseFloat(q.get("yaw") || "0");
 const canvas = document.getElementById("c");
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: true });

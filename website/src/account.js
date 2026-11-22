@@ -65,7 +65,7 @@ export function initAccount({ lenis } = {}) {
     form.hidden = false;
     done.hidden = true;
     setMode(m);
-    setRole(from?.dataset.role || "parent");   // Book a tutor starts as Parent, Teach with us as Student tutor
+    setRole(from?.dataset.role || "parent");  // Book a tutor and the child's chair start as Parent, Teach with us and the tutor's chair as Student tutor
     lenis?.stop();
     dlg.showModal();
     dlg.querySelector(mode === "signup" ? "#acc-name" : "#acc-email").focus();
@@ -88,7 +88,10 @@ export function initAccount({ lenis } = {}) {
     if (user && what === "signup") {                            // already signed in: go straight there
       return b.dataset.role === "tutor" ? scrollToId("tutors") : scrollToId("book", "#book .chip");
     }
-    open(what, b);
+    // a seat in the 3D room: let the camera glide to it before the panel opens
+    const glide = b.dataset.choice && document.body.classList.contains("stage-ready") && !matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (glide) setTimeout(() => open(what, b), 800);
+    else open(what, b);
   }));
 
   dlg.addEventListener("click", (e) => {
@@ -134,9 +137,9 @@ export function initAccount({ lenis } = {}) {
         if (data.session) {
           showDone(`Welcome, ${name}`, role === "tutor"
             ? "Your account is ready. Next, send us your subjects and results so we can check them."
-            : "Your account is ready. Book a first lesson whenever you like.", role === "parent");
+            : "Your account is ready. Book a first lesson whenever you like.", role !== "tutor");
         } else {
-          showDone("Check your email", `We sent a link to ${email}. Open it to confirm your account, then log in.`, role === "parent");
+          showDone("Check your email", `We sent a link to ${email}. Open it to confirm your account, then log in.`, role !== "tutor");
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
