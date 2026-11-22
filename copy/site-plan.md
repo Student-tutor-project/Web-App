@@ -41,7 +41,7 @@ Order and job of each section. The room comes back twice, so the 3D stays a thre
 | 4 | Why parents trust it | Safety | Keep the two-column list. Recolour only (done). |
 | 5 | **Who's at the table** (new, replaces the lamp's Explore) | Show real tutors | The stage undims and the room returns, seen from above the table. Each chair is a sample tutor: hovering or tabbing to one shows their subject, school, rate and "Grades checked". Clicking "Book with Aisha" jumps to step 2 of the booking flow with that tutor chosen. It uses the 7 sample tutors that already exist in `booking.js`. |
 | 6 | For student tutors | Recruit tutors | The tutor's chair again: a still render from the tutor's seat looking at the student's chair, beside the three tutor benefits. Its "Apply to teach" opens the tutor sign-up rather than an email. |
-| 7 | Free lessons | The free track | Replace `world.jpg` (the old lamp-era night room) with a **dusk render of the same room**: the city's light lines on, the room lit by the ceiling panels. Rendered from the scene, so no credits. |
+| 7 | Free lessons | The free track | Done 2026-11-22: `world.jpg` replaced by `free.jpg`, a daylight render of the room looking down the glass wall (text on the slate wall). A dusk version, with the city light lines on, is still an option. Rendered from the scene, so no credits. |
 | 8 | Questions parents ask | Objections | Keep. Add "What does a tutor see?" and "Can my child use their own account?" now that students can sign up. |
 | 9 | Final call | Last push | Keep. |
 | 10 | Footer | Contact | Keep. Replace the placeholder contacts before launch. |
