@@ -439,6 +439,25 @@ export async function initRoom({ lenis, account } = {}) {
     composer ? composer.render() : renderer.render(scene, camera);
   }
 
+  // warm up before the first frame so the page never freezes: compile the shaders in the
+  // background (parallel compile where the browser has it), then upload the textures a few at a time between frames
+  const nextFrame = () => new Promise((r) => requestAnimationFrame(() => r()));
+  // (with bloom on, the scene draws into the composer's buffer, so compile for that target)
+  try {
+    if (composer) renderer.setRenderTarget(composer.readBuffer);
+    await renderer.compileAsync(scene, camera);
+  } catch { /* the first frame compiles instead */ }
+  renderer.setRenderTarget(null);
+  const textures = new Set();
+  scene.traverse((o) => {
+    if (!o.material) return;
+    for (const m of [].concat(o.material)) for (const v of Object.values(m)) if (v?.isTexture) textures.add(v);
+  });
+  let budget = performance.now();
+  for (const tex of textures) {
+    renderer.initTexture(tex);
+    if (performance.now() - budget > 8) { await nextFrame(); budget = performance.now(); }
+  }
   renderer.setAnimationLoop(tick);
   tick();
   document.body.classList.add("stage-ready");
