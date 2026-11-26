@@ -69,7 +69,12 @@ export function initAccount({ lenis } = {}) {
 
   // the booking page: parents book there, student tutors set their hours there
   const onBookPage = !!document.querySelector('[data-view="parent"]');
-  const goBook = () => { if (!onBookPage) location.href = "./book.html"; };
+  // the landing page may turn this into the fly-into-the-laptop transition (main.js)
+  const goBook = () => {
+    if (onBookPage) return;
+    const ev = new CustomEvent("st:navigate", { detail: { url: "./book.html" }, cancelable: true });
+    if (document.dispatchEvent(ev)) location.href = "./book.html";
+  };
 
   function showDone(heading, text, isParent) {
     form.hidden = true;

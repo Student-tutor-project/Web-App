@@ -43,6 +43,12 @@ function facadeTextures() {
   ge.fillRect(0, 0, 8, H);
   ge.fillRect(W - 8, 0, 8, H);
   for (let y = 160; y < H; y += 384) ge.fillRect(0, y, W, 5);
+  for (let y = 0; y < H; y += 32) {                // offices with the lights on: faint by day, they carry the night
+    for (let x = 0; x < W; x += 32) {
+      const v = Math.random();
+      if (v < 0.3) { ge.fillStyle = `rgba(255,255,255,${(0.12 + Math.random() * 0.28).toFixed(2)})`; ge.fillRect(x + 3, y + 7, 26, 22); }
+    }
+  }
   const emissive = new THREE.CanvasTexture(e);
   emissive.wrapS = emissive.wrapT = THREE.RepeatWrapping;
   emissive.anisotropy = 8;
@@ -209,5 +215,19 @@ export function makeCity({ lite = false, accent = "#A8D5F2" } = {}) {
     ringMat.opacity = 0.5 + Math.sin(t * 0.8) * 0.15;
   }
 
-  return { city, update };
+  // time of day (see daylight.js): sky, clouds, and how brightly the towers glow
+  const warm = new THREE.Color("#FFD9A6"), cloudDay = new THREE.Color("#FFFFFF"), cloudNight = new THREE.Color("#5E6E80");
+  function setLight(L) {
+    sky.material.uniforms.uTop.value.set(L.sky[0]);
+    sky.material.uniforms.uHorizon.value.set(L.sky[1]);
+    for (const c of clouds) { c.material.opacity = L.clouds; c.material.color.copy(cloudDay).lerp(cloudNight, L.night); }
+    for (const t of towers) {
+      t.material.emissive.copy(glow).lerp(warm, L.night * 0.7);
+      t.material.emissiveIntensity = L.glow;
+      t.material.roughness = 0.25 + 0.2 * L.rain;
+    }
+    bridgeMat.emissiveIntensity = 0.2 + L.night * 0.8;
+  }
+
+  return { city, update, setLight };
 }

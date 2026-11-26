@@ -13,8 +13,11 @@ import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js"
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CSS3DRenderer } from "three/addons/renderers/CSS3DRenderer.js";
 import { makeCity } from "./city.js";
-import { makeDust } from "./particles.js";
+import { singaporeHour, rainLevel, lightAt } from "./daylight.js";
+import { makeBeams, makeBeamDust, makeGlassRain, makeCityRain } from "./ambience.js";
+import { makeWhiteboard, BOARD } from "./whiteboard.js";
 
 const css = (name) => getComputedStyle(document.documentElement).getPropertyValue(name).trim();
 const LITE = matchMedia("(max-width: 768px), (hover: none)").matches;
@@ -160,6 +163,8 @@ export async function initRoom({ lenis, account } = {}) {
   skirt.position.set(cx, 0.045, ROOM.z0 + 0.01);
   const skirtR = new THREE.Mesh(new THREE.BoxGeometry(0.02, 0.09, D), skirtMat);
   skirtR.position.set(ROOM.x1 - 0.01, 0.045, cz);
+  // the shell blocks the sun, so it only comes in through the glass and lands in patches on the floor
+  for (const m of [ceiling, back, right, front]) m.castShadow = true;
   scene.add(floor, ceiling, back, right, front, skirt, skirtR);
 
   // ceiling light panels
@@ -193,8 +198,21 @@ export async function initRoom({ lenis, account } = {}) {
   scene.add(ceilingFill);
 
   // ---- the city outside ----
-  const { city, update: updateCity } = makeCity({ lite: LITE, accent });
+  const { city, update: updateCity, setLight: setCityLight } = makeCity({ lite: LITE, accent });
   scene.add(city);
+
+  // ---- sun shafts, rain, and the whiteboard on the slate wall ----
+  const beams = makeBeams();
+  const glassRain = makeGlassRain();
+  const cityRain = makeCityRain(LITE ? 500 : 1400, renderer.getPixelRatio());
+  const board = makeWhiteboard();
+  scene.add(beams.mesh, glassRain, cityRain, board.group);
+  const cssScene = new THREE.Scene();
+  cssScene.add(board.ink);
+  const cssRenderer = new CSS3DRenderer();
+  cssRenderer.domElement.className = "stage-css";
+  cssRenderer.domElement.setAttribute("aria-hidden", "true");
+  canvas.after(cssRenderer.domElement);
 
   // ---- table, laptop, window frames (Blender) and the chairs (Tripo) ----
   const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
@@ -218,7 +236,9 @@ export async function initRoom({ lenis, account } = {}) {
   table.rotation.y = TABLE.yaw;
   scene.add(table, frames);
   // the display glows softly; it brightens when the laptop is chosen
-  const displayMat = new THREE.MeshBasicMaterial({ map: screenTexture(accent), toneMapped: false });
+  const screenTex = screenTexture(accent);
+  screenTex.flipY = false;                 // the laptop's UVs run top-down: keep the sign-in screen upright
+  const displayMat = new THREE.MeshBasicMaterial({ map: screenTex, toneMapped: false });
   displayMat.color.setScalar(0.85);
   display.material = displayMat;
   // the bevelled top looks a touch glossier in daylight
@@ -275,9 +295,49 @@ export async function initRoom({ lenis, account } = {}) {
     c.hit = hit;
   }
 
-  // ---- dust in the sunlight ----
-  const dust = makeDust(LITE ? 300 : 900, "#FFF6EA", renderer.getPixelRatio(), { center: [-2.2, 0, -1.2], spread: [4.5, 2.8, 7], size: 7, opacity: 0.35 });
+  // ---- dust: it only shows where a sun shaft catches it ----
+  const dust = makeBeamDust(LITE ? 700 : 2200, renderer.getPixelRatio());
   if (!REDUCED) scene.add(dust);
+
+  // ---- the light of the hour in Singapore (and the weather), refreshed every minute ----
+  const sunDir = new THREE.Vector3();
+  let light = null;
+  function applyLight() {
+    const hour = singaporeHour();
+    const L = lightAt(hour, rainLevel(hour));
+    light = L;
+    const el = THREE.MathUtils.degToRad(L.sun.elevation);
+    sun.position.set(-Math.cos(el) * 16, Math.max(0.6, Math.sin(el) * 16), L.sun.z);
+    sun.color.set(L.sun.color);
+    sun.intensity = L.sun.intensity;
+    hemi.intensity = L.hemi;
+    windowLight.color.set(L.win.color);
+    windowLight.intensity = L.win.intensity;
+    ceilingFill.color.set(L.lamp.color);
+    ceilingFill.intensity = L.lamp.intensity;
+    ceilingFill.distance = 9 + 3 * L.night;              // the lamps reach further once it's dark outside
+    panelMat.color.set(L.panel);
+    scene.fog.color.set(L.fog);
+    scene.fog.density = 0.0013 * (1 + 2.5 * L.rain);
+    scene.environmentIntensity = L.env;
+    renderer.toneMappingExposure = L.exposure;
+    setCityLight(L);
+    sunDir.copy(sun.target.position).sub(sun.position).normalize();
+    beams.aim(sunDir);
+    beams.mesh.material.uniforms.uColor.value.set(L.sun.color);
+    beams.mesh.material.uniforms.uStrength.value = REDUCED ? L.beams * 0.6 : L.beams;
+    dust.material.uniforms.uDir.value.copy(sunDir);
+    dust.material.uniforms.uBeams.value = L.beams;
+    dust.material.uniforms.uAmbient.value = 0.06 + 0.1 * (1 - L.night);
+    glassRain.material.uniforms.uRain.value = L.rain;
+    glassRain.material.uniforms.uLight.value.set(L.sky[1]).lerp(new THREE.Color("#FFFFFF"), 0.5);
+    cityRain.material.uniforms.uRain.value = REDUCED ? 0 : L.rain;
+    // the board's ink sits in the page, not the scene: dim it with the room
+    board.el.style.filter = `brightness(${(0.72 + 0.28 * (1 - L.night)).toFixed(2)})`;
+    document.documentElement.dataset.daylight = L.night > 0.6 ? "night" : L.sun.elevation < 12 && L.sun.intensity > 0.3 ? "golden" : "day";
+  }
+  applyLight();
+  setInterval(applyLight, 60000);
 
   // ---- post: a whisper of bloom on the sky and the lit screen, desktop only ----
   let composer = null;
@@ -294,19 +354,29 @@ export async function initRoom({ lenis, account } = {}) {
   const beats = [
     { pos: [3.2, 1.62, 4.6], look: [-1.6, 0.78, -2.4] },     // 1 the room, as in the photo
     { pos: [1.4, 1.62, 3.4], look: [-5.6, 1.7, -5.4] },      // 2 towards the corner: the city on the left, slate wall for the copy
-    { pos: [-0.2, 1.55, 1.9], look: [-2.6, 1.0, -1.6] },     // 3 closer in: the laptop at the tutor's end of the table
+    { pos: [-1.5, 1.6, 0.2], look: [5.5, 1.5, 0.45],         // 3 turn round to the whiteboard: the working-out writes itself
+      phone: { pos: [-2.6, 1.6, -1.3], look: [5.5, 2.6, -1.3] } },   //   on a phone: square on, low in the frame under the copy
     { pos: [4.4, 1.45, -0.6], look: [-2.8, 1.2, -3.4] },       // 4 down the length of the table
     { pos: [3.6, 1.75, 5.2], look: [-1.2, 0.85, -2.2] },     // 5 back to the room, wider
   ];
-  const st = { px: 0, py: 0, pz: 0, lx: 0, ly: 0, lz: 0, hero: 1 };
-  const set = (b) => Object.assign(st, { px: b.pos[0], py: b.pos[1], pz: b.pos[2], lx: b.look[0], ly: b.look[1], lz: b.look[2] });
+  // phones: copy on top, the seats in the lower half (a beat can give its own phone framing)
+  const phoneOf = (b) => b.phone || { pos: [b.pos[0] + 0.4, b.pos[1] + 0.5, b.pos[2] + 1.4], look: [b.look[0] - 0.7, b.look[1] + 1.25, b.look[2]] };
+  const keysOf = (b) => { const p = phoneOf(b); return { px: b.pos[0], py: b.pos[1], pz: b.pos[2], lx: b.look[0], ly: b.look[1], lz: b.look[2],
+    qx: p.pos[0], qy: p.pos[1], qz: p.pos[2], mx: p.look[0], my: p.look[1], mz: p.look[2] }; };
+  const st = { px: 0, py: 0, pz: 0, lx: 0, ly: 0, lz: 0, qx: 0, qy: 0, qz: 0, mx: 0, my: 0, mz: 0, hero: 1 };
+  const set = (b) => Object.assign(st, keysOf(b));
   set(beats[0]);
   if (!REDUCED) {
     const tl = gsap.timeline({ defaults: { ease: "power1.inOut", duration: 1 } });
-    beats.slice(1).forEach((b, i) => tl.to(st, { px: b.pos[0], py: b.pos[1], pz: b.pos[2], lx: b.look[0], ly: b.look[1], lz: b.look[2], hero: 0 }, i));
+    beats.slice(1).forEach((b, i) => tl.to(st, { ...keysOf(b), hero: 0 }, i));
     ScrollTrigger.create({ trigger: "#story", start: "top top", end: "bottom bottom", scrub: 1, animation: tl });
   }
   st.signs = 1;
+
+  // the working-out writes itself as the third beat scrolls in (all at once with reduced motion)
+  const beat3 = document.querySelectorAll("#story .beat")[2];
+  if (REDUCED || !beat3) board.draw(1);
+  else ScrollTrigger.create({ trigger: beat3, start: "top 85%", end: "center 45%", scrub: 0.6, onUpdate: (s) => board.draw(s.progress) });
 
   gsap.to(".stage-dim", { opacity: 0.88, ease: "none",
     scrollTrigger: { trigger: "#story", start: "bottom 90%", end: "bottom 40%", scrub: true } });
@@ -325,15 +395,17 @@ export async function initRoom({ lenis, account } = {}) {
     gsap.to(view, { t: 1, duration: REDUCED ? 0 : 1.1, ease: "power2.inOut" });
     gsap.to(displayMat.color, { r: id === "laptop" ? 1.25 : 0.85, g: id === "laptop" ? 1.25 : 0.85, b: id === "laptop" ? 1.25 : 0.85, duration: 0.6 });
   }
-  function release() {
-    if (!chosen) return;
+  let flying = false;                      // set while flying into the laptop; closing the panel must not undo it
+  function release(force = false) {
+    if (!chosen || (flying && !force)) return;
+    flying = false;
     chosen = null;
     gsap.to(view, { t: 0, duration: REDUCED ? 0 : 1.0, ease: "power2.inOut" });
     gsap.to(displayMat.color, { r: 0.85, g: 0.85, b: 0.85, duration: 0.6 });
   }
   // the signs are the account buttons; the room only adds the camera move
   for (const c of Object.values(choices)) c.el?.addEventListener("click", () => choose(c.id));
-  document.getElementById("account")?.addEventListener("close", release);
+  document.getElementById("account")?.addEventListener("close", () => release());
 
   // pointer: hovering an object lights its sign; clicking it presses the sign
   const ray = new THREE.Raycaster(), ndc = new THREE.Vector2();
@@ -371,6 +443,7 @@ export async function initRoom({ lenis, account } = {}) {
     camera.updateProjectionMatrix();
     renderer.setSize(innerWidth, innerHeight, false);
     composer?.setSize(innerWidth, innerHeight);
+    cssRenderer.setSize(innerWidth, innerHeight);
   }
   addEventListener("resize", resize);
   resize();
@@ -399,9 +472,8 @@ export async function initRoom({ lenis, account } = {}) {
 
     // camera: the scroll beat, eased towards the chosen object, plus a slow breath and cursor parallax
     const portrait = camera.aspect < 1;
-    camPos.set(st.px, st.py, st.pz);
-    camLook.set(st.lx, st.ly, st.lz);
-    if (portrait) { camPos.x += 0.4; camPos.z += 1.4; camPos.y += 0.5; camLook.x -= 0.7; camLook.y += 1.25; }   // copy on top, the seats in the lower half
+    if (portrait) { camPos.set(st.qx, st.qy, st.qz); camLook.set(st.mx, st.my, st.mz); }
+    else { camPos.set(st.px, st.py, st.pz); camLook.set(st.lx, st.ly, st.lz); }
     if (view.t > 0) {
       camPos.lerp(tmp.set(view.px, view.py, view.pz), view.t);
       camLook.lerp(tmp.set(view.lx, view.ly, view.lz), view.t);
@@ -435,8 +507,34 @@ export async function initRoom({ lenis, account } = {}) {
     updateCity(REDUCED ? 0 : t);
     dust.material.uniforms.uTime.value = t;
     dust.material.uniforms.uBoost.value = Math.min(2, Math.abs(lenis?.velocity || 0) * 0.02);
+    beams.mesh.material.uniforms.uTime.value = REDUCED ? 0 : t;
+    glassRain.material.uniforms.uTime.value = REDUCED ? 0 : t;
+    cityRain.material.uniforms.uTime.value = t;
 
     composer ? composer.render() : renderer.render(scene, camera);
+    cssRenderer.render(cssScene, camera);
+  }
+
+  // ---- into the laptop: the camera pushes into the screen, which becomes the booking page ----
+  const screenBox = new THREE.Box3().setFromObject(display);
+  const screenCenter = screenBox.getCenter(new THREE.Vector3());
+  const screenNormal = new THREE.Vector3();
+  {
+    const n = display.geometry.attributes.normal;
+    screenNormal.fromBufferAttribute(n, 0).transformDirection(display.matrixWorld);
+    if (screenNormal.dot(tmp.set(beats[0].pos[0], beats[0].pos[1], beats[0].pos[2]).sub(screenCenter)) < 0) screenNormal.negate();
+  }
+  function flyInto() {
+    return new Promise((resolve) => {
+      if (REDUCED) return resolve();
+      flying = true;
+      chosen = choices.laptop;
+      const to = screenCenter.clone().addScaledVector(screenNormal, 0.16);
+      Object.assign(view, { px: to.x, py: to.y, pz: to.z, lx: screenCenter.x, ly: screenCenter.y, lz: screenCenter.z });
+      gsap.to(view, { t: 1, duration: 1.15, ease: "power3.inOut" });
+      gsap.to(displayMat.color, { r: 1.4, g: 1.4, b: 1.4, duration: 1.0, ease: "power1.in" });
+      gsap.delayedCall(0.95, resolve);
+    });
   }
 
   // warm up before the first frame so the page never freezes: compile the shaders in the
@@ -461,7 +559,7 @@ export async function initRoom({ lenis, account } = {}) {
   renderer.setAnimationLoop(tick);
   tick();
   document.body.classList.add("stage-ready");
-  const api = { renderer, scene, camera, st, choices, choose, release, beats, get fps() { return fps; }, get dpr() { return dpr; } };
+  const api = { renderer, scene, camera, st, choices, choose, release, beats, flyInto, board, applyLight, get light() { return light; }, get fps() { return fps; }, get dpr() { return dpr; } };
   if (import.meta.env.DEV) { window.__room = api; window.__THREE = THREE; }
   return api;
 }
