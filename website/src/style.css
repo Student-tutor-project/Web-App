@@ -498,17 +498,3 @@ textarea::placeholder { color: #6A7A84; }
   .doc h2 { font-size: 24px; }
   .agree { padding: 20px 16px; }
 }
-
-/* ---- the whiteboard's ink (CSS3D layer over the room) and the fade when leaving for the booking page ---- */
-.stage-css { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; opacity: 0; transition: opacity .8s ease; }
-body.stage-ready .stage-css { opacity: 1; }
-body.stage-failed .stage-css { display: none; }
-.wb { pointer-events: none; }
-.wb-ink { stroke: #24507A; stroke-width: 7; stroke-dasharray: 1; stroke-dashoffset: 1; }
-.wb-ink--accent { stroke: #2F7FB8; stroke-width: 8; }
-.wb-ink--thin { stroke-width: 5; }
-.wb-fill { fill: #4A8DB5; opacity: 0; }
-body::after { content: ""; position: fixed; inset: 0; z-index: 100; background: var(--bg); opacity: 0; pointer-events: none; transition: opacity .28s ease; }
-body.is-leaving::after { opacity: 1; }
-#page, .bar { transition: opacity .5s ease; }
-body.is-flying #page, body.is-flying .bar { opacity: 0; pointer-events: none; }

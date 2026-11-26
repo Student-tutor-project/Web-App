@@ -6,16 +6,16 @@ import * as THREE from "three";
 
 // key moments of the day; everything in between is blended
 const KEYS = [
-  { h: 0,    sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4, beams: 0,    clouds: 0.12, env: 0.12 },
-  { h: 5.6,  sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4, beams: 0,    clouds: 0.12, env: 0.12 },
-  { h: 6.7,  sky: ["#5B7DA6", "#F2C9A8"], fog: "#D9C2B4", sun: ["#FFC89A", 0.7, 4, 5],   hemi: 0.3,  win: ["#F0D8C8", 1.0],  lamp: ["#FFF0DA", 2.8], panel: "#FFF4E6", exposure: 0.86, glow: 0.8, beams: 0,    clouds: 0.55, env: 0.3 },
-  { h: 8.8,  sky: ["#7FA9CC", "#E6EFF4"], fog: "#DCE8EF", sun: ["#FFF6EC", 1.3, 40, 4],  hemi: 0.5,  win: ["#E6F1F8", 1.8],  lamp: ["#F2F6F8", 2.3], panel: "#FFFFFF", exposure: 0.82, glow: 0.3, beams: 0,    clouds: 0.7,  env: 0.4 },
-  { h: 12.5, sky: ["#7FA9CC", "#E6EFF4"], fog: "#DCE8EF", sun: ["#FFF4E6", 4, 33, 2],  hemi: 0.42, win: ["#E6F1F8", 1.35],  lamp: ["#F2F6F8", 2.5], panel: "#FFFFFF", exposure: 0.82, glow: 0.35, beams: 0.3, clouds: 0.7,  env: 0.4 },
-  { h: 16,   sky: ["#76A0C6", "#EAEFEF"], fog: "#E0E6E6", sun: ["#FFEBD2", 8, 21, 0],  hemi: 0.35, win: ["#EEF0EC", 1.0],  lamp: ["#F4F4F0", 2.4], panel: "#FFFFFF", exposure: 0.82, glow: 0.35, beams: 0.75, clouds: 0.7, env: 0.4 },
-  { h: 18.3, sky: ["#6F93BC", "#F6D2A6"], fog: "#EBD3BC", sun: ["#FFC37E", 8.5, 9, -1.5], hemi: 0.32, win: ["#FFE0BE", 0.95], lamp: ["#FFF0DE", 2.6], panel: "#FFF6EA", exposure: 0.85, glow: 0.55, beams: 1,   clouds: 0.6,  env: 0.34 },
-  { h: 19.2, sky: ["#2C4468", "#E0957A"], fog: "#6A6378", sun: ["#FF9A6A", 0.5, 1.5, -2.5], hemi: 0.24, win: ["#9DB0D0", 0.7], lamp: ["#FFE6C8", 5.5], panel: "#FFEAD0", exposure: 0.9, glow: 1.2, beams: 0.3, clouds: 0.35, env: 0.22 },
-  { h: 20.1, sky: ["#0E1825", "#22344A"], fog: "#16222F", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.4],  lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4, beams: 0,    clouds: 0.14, env: 0.12 },
-  { h: 24,   sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4, beams: 0,    clouds: 0.12, env: 0.12 },
+  { h: 0,    sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4,    clouds: 0.12, env: 0.12 },
+  { h: 5.6,  sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4,    clouds: 0.12, env: 0.12 },
+  { h: 6.7,  sky: ["#5B7DA6", "#F2C9A8"], fog: "#D9C2B4", sun: ["#FFC89A", 0.7, 4, 5],   hemi: 0.3,  win: ["#F0D8C8", 1.0],  lamp: ["#FFF0DA", 2.8], panel: "#FFF4E6", exposure: 0.86, glow: 0.8,    clouds: 0.55, env: 0.3 },
+  { h: 8.8,  sky: ["#7FA9CC", "#E6EFF4"], fog: "#DCE8EF", sun: ["#FFF6EC", 1.3, 40, 4],  hemi: 0.5,  win: ["#E6F1F8", 1.8],  lamp: ["#F2F6F8", 2.3], panel: "#FFFFFF", exposure: 0.82, glow: 0.3,    clouds: 0.7,  env: 0.4 },
+  { h: 12.5, sky: ["#7FA9CC", "#E6EFF4"], fog: "#DCE8EF", sun: ["#FFF4E6", 4, 33, 2],  hemi: 0.42, win: ["#E6F1F8", 1.35],  lamp: ["#F2F6F8", 2.5], panel: "#FFFFFF", exposure: 0.82, glow: 0.35, clouds: 0.7,  env: 0.4 },
+  { h: 16,   sky: ["#76A0C6", "#EAEFEF"], fog: "#E0E6E6", sun: ["#FFEBD2", 8, 21, 0],  hemi: 0.35, win: ["#EEF0EC", 1.0],  lamp: ["#F4F4F0", 2.4], panel: "#FFFFFF", exposure: 0.82, glow: 0.35, clouds: 0.7, env: 0.4 },
+  { h: 18.3, sky: ["#6F93BC", "#F6D2A6"], fog: "#EBD3BC", sun: ["#FFC37E", 8.5, 9, -1.5], hemi: 0.32, win: ["#FFE0BE", 0.95], lamp: ["#FFF0DE", 2.6], panel: "#FFF6EA", exposure: 0.85, glow: 0.55,   clouds: 0.6,  env: 0.34 },
+  { h: 19.2, sky: ["#2C4468", "#E0957A"], fog: "#6A6378", sun: ["#FF9A6A", 0.5, 1.5, -2.5], hemi: 0.24, win: ["#9DB0D0", 0.7], lamp: ["#FFE6C8", 5.5], panel: "#FFEAD0", exposure: 0.9, glow: 1.2, clouds: 0.35, env: 0.22 },
+  { h: 20.1, sky: ["#0E1825", "#22344A"], fog: "#16222F", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.4],  lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4,    clouds: 0.14, env: 0.12 },
+  { h: 24,   sky: ["#0B1420", "#1E2E40"], fog: "#142030", sun: ["#9FB6D6", 0.0, 8, 3],   hemi: 0.22, win: ["#5C7896", 0.35], lamp: ["#FFE2BC", 8], panel: "#FFE4C0", exposure: 0.95, glow: 1.4,    clouds: 0.12, env: 0.12 },
 ];
 
 const q = new URLSearchParams(location.search);
@@ -64,7 +64,6 @@ export function lightAt(hour, rain = 0) {
     panel: mixColor(a.panel, b.panel, s),
     exposure: mix(a.exposure, b.exposure, s),
     glow: mix(a.glow, b.glow, s),
-    beams: mix(a.beams, b.beams, s),
     clouds: mix(a.clouds, b.clouds, s),
     env: mix(a.env, b.env, s),
     night: 1 - Math.min(1, mix(a.sun[1], b.sun[1], s) / 0.7),   // 1 in the dark, 0 once the sun is up
@@ -76,7 +75,6 @@ export function lightAt(hour, rain = 0) {
     L.fog = mixColor(L.fog, "#9AA6AF", rain * day);
     L.sun.intensity *= 1 - 0.8 * rain;
     L.win.color = mixColor(L.win.color, "#C9D3DA", rain);
-    L.beams *= 1 - rain;
     L.clouds = mix(L.clouds, 0.9, rain);
     L.glow += 0.25 * rain;
   }
