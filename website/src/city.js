@@ -1,6 +1,6 @@
 // The city outside the glass: a futuristic daylight skyline built in code (no real landmarks).
-// Pale glass towers, a few twisted and tapered ones, halo rings, sky bridges, and small craft
-// that drift between the towers. Everything sits in haze so it reads as far away.
+// Pale glass towers, a few twisted and tapered ones, halo rings and sky bridges.
+// Everything sits in haze so it reads as far away.
 import * as THREE from "three";
 
 // a seeded random, so the skyline is the same on every visit
@@ -184,30 +184,7 @@ export function makeCity({ lite = false, accent = "#A8D5F2" } = {}) {
     city.add(br);
   }
 
-  // craft: small lights that glide along lanes between the towers
-  const craftCount = lite ? 10 : 24;
-  const craftGeo = new THREE.SphereGeometry(0.5, 8, 6);
-  const craftMat = new THREE.MeshBasicMaterial({ color: "#F4FAFF" });
-  const craft = new THREE.InstancedMesh(craftGeo, craftMat, craftCount);
-  const lanes = [];
-  for (let i = 0; i < craftCount; i++) {
-    lanes.push({
-      x: -70 - rand() * 160, y: -45 + rand() * 60, z0: -300, len: 520,
-      speed: 8 + rand() * 10, off: rand(), dir: rand() < 0.5 ? 1 : -1,
-    });
-  }
-  city.add(craft);
-  const mtx = new THREE.Matrix4();
-
   function update(t) {
-    for (let i = 0; i < craftCount; i++) {
-      const l = lanes[i];
-      const u = ((t * l.speed) / l.len + l.off) % 1;
-      const z = l.dir > 0 ? l.z0 + u * l.len : l.z0 + (1 - u) * l.len;
-      mtx.makeScale(4, 1, 1).setPosition(l.x, l.y + Math.sin(t * 0.5 + i) * 0.6, z);
-      craft.setMatrixAt(i, mtx);
-    }
-    craft.instanceMatrix.needsUpdate = true;
     for (const c of clouds) {
       c.position.z += c.userData.speed * 0.02;
       if (c.position.z > 260) c.position.z = -260;
