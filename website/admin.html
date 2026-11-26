@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Tutor: tutor checks</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#141C22" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141C22'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%23A8D5F2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%23A8D5F2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%23A8D5F2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body class="app">
+  <header class="bar bar--solid">
+    <a class="brand" href="./" aria-label="Student Tutor, home">
+      <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Student Tutor</span>
+    </a>
+    <nav class="bar__nav" aria-label="Main">
+      <a href="./book.html">Booking page</a>
+    </nav>
+  </header>
+
+  <main class="app__main">
+    <section class="view" data-view="loading"><p class="view__wait">Loading…</p></section>
+
+    <section class="view view--gate" data-view="out" hidden>
+      <h1>Tutor checks</h1>
+      <p>This page is for the Student Tutor team. Log in on the booking page with a team account, then come back.</p>
+      <div class="view__actions"><a class="btn btn--primary" href="./book.html">Go to log in</a></div>
+    </section>
+
+    <section class="view view--gate" data-view="denied" hidden>
+      <h1>Tutor checks</h1>
+      <p>Your account isn't on the Student Tutor team, so you can't review tutors.</p>
+      <div class="view__actions"><a class="btn btn--primary" href="./book.html">Back to the booking page</a></div>
+    </section>
+
+    <section class="view" data-view="admin" hidden aria-labelledby="admin-h">
+      <div class="view__head">
+        <h1 id="admin-h">Tutor checks</h1>
+        <p>Open each report card and compare it with the subjects and results the tutor claims. Approved tutors appear to parents straight away, marked Grades checked.</p>
+      </div>
+      <div class="field">
+        <span class="field__label" id="a-filter-l">Show</span>
+        <div class="chips" role="radiogroup" aria-labelledby="a-filter-l" data-filter-status>
+          <button type="button" class="chip" role="radio" aria-checked="true" data-value="pending">Waiting for a check</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="approved">Approved</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="rejected">Not approved</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="draft">Not sent yet</button>
+        </div>
+      </div>
+      <ul class="admin-list" aria-live="polite"></ul>
+    </section>
+  </main>
+
+  <script type="module" src="/src/admin-page.js"></script>
+</body>
+</html>

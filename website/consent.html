@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Tutor: a parent's agreement</title>
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#141C22" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141C22'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%23A8D5F2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%23A8D5F2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%23A8D5F2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body class="app">
+  <header class="bar bar--solid">
+    <a class="brand" href="./" aria-label="Student Tutor, home">
+      <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Student Tutor</span>
+    </a>
+  </header>
+
+  <main class="app__main">
+    <section class="view" data-view="loading"><p class="view__wait">Loading…</p></section>
+
+    <section class="view view--gate" data-view="gone" hidden>
+      <h1>This link no longer works</h1>
+      <p>The student may have made a new link, or changed your details. Ask them to send you the latest link from their Student Tutor page.</p>
+    </section>
+
+    <section class="view" data-view="ask" hidden aria-labelledby="ask-h">
+      <div class="view__head">
+        <h1 id="ask-h"><span data-tutor>Your child</span> would like to tutor on Student Tutor</h1>
+        <p>Student Tutor lets secondary, JC and university students give online lessons to younger students. Because <span data-tutor>the student</span> <span data-is>is</span> under 18, we need a parent or guardian to agree first.</p>
+      </div>
+      <article class="doc">
+        <section aria-labelledby="what-h">
+          <h2 id="what-h">What tutoring here involves</h2>
+          <ul>
+            <li>One-hour lessons by video call on Google Meet or Zoom, with Primary or Secondary school students. The student's parent books each lesson.</li>
+            <li><span data-tutor>Your child</span> chooses which hours to open and sets the hourly rate. Fees are agreed and paid between the parent and the tutor.</li>
+            <li>Our team checks <span data-tutor>your child</span>'s report card before any parent can see the profile. We delete the report card once the profile is approved.</li>
+            <li>Parents see only the first name, school year, subjects and rate.</li>
+            <li>Every lesson follows our <a href="./safety.html#lessons">lesson rules</a>: cameras on, no swapping phone numbers or social media, and a parent nearby for younger children.</li>
+            <li>You can withdraw your agreement at any time by emailing <a href="mailto:hello@studenttutor.example?subject=Withdraw%20guardian%20agreement">hello@studenttutor.example</a>. We then hide the profile from parents.</li>
+          </ul>
+          <p>Read the full <a href="./safety.html">safety, privacy and terms</a> page before you agree.</p>
+        </section>
+
+        <form class="agree" novalidate>
+          <div class="field">
+            <label class="field__label" for="c-name">Your full name</label>
+            <input id="c-name" autocomplete="name" maxlength="120" />
+          </div>
+          <label class="tick"><input type="checkbox" id="c-ok" /> <span>I'm <span data-tutor>this student</span>'s parent or guardian. I've read what tutoring here involves and the terms, and I agree to <span data-tutor>this student</span> tutoring on Student Tutor.</span></label>
+          <p class="error" role="alert" hidden></p>
+          <button type="submit" class="btn btn--primary">I agree</button>
+        </form>
+      </article>
+    </section>
+
+    <section class="view view--gate" data-view="done" hidden>
+      <h1>Thank you</h1>
+      <p class="agree__done" data-done-text></p>
+      <p>If you change your mind, email <a href="mailto:hello@studenttutor.example?subject=Withdraw%20guardian%20agreement">hello@studenttutor.example</a> and we'll hide the profile from parents.</p>
+    </section>
+  </main>
+
+  <script type="module" src="/src/consent-page.js"></script>
+</body>
+</html>

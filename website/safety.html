@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Tutor: safety, privacy and terms</title>
+  <meta name="description" content="How Student Tutor keeps lessons safe, what personal data it keeps and why, and the terms for parents and student tutors." />
+  <meta name="theme-color" content="#141C22" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141C22'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%23A8D5F2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%23A8D5F2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%23A8D5F2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body class="app">
+  <!-- Draft written for the founder. Have a Singapore lawyer review it before launch. Contact details are placeholders from brand-kit section 13. -->
+  <header class="bar bar--solid">
+    <a class="brand" href="./" aria-label="Student Tutor, home">
+      <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Student Tutor</span>
+    </a>
+    <nav class="bar__nav" aria-label="Main">
+      <a href="./">Home</a>
+      <a href="./book.html">Booking page</a>
+    </nav>
+  </header>
+
+  <main class="app__main">
+    <div class="view">
+      <div class="view__head">
+        <h1>Safety, privacy and terms</h1>
+        <p>How lessons stay safe, what we keep about you and why, and what parents and student tutors agree to when they use Student Tutor.</p>
+      </div>
+
+      <article class="doc">
+        <nav class="doc__toc" aria-label="On this page">
+          <a href="#report">Report a problem</a>
+          <a href="#lessons">Lesson rules</a>
+          <a href="#tutors">Who can tutor</a>
+          <a href="#privacy">Your personal data</a>
+          <a href="#terms">Terms</a>
+        </nav>
+
+        <section id="report" aria-labelledby="report-h">
+          <h2 id="report-h">Report a problem</h2>
+          <p>If anything in a lesson worried you or your child, tell us straight away. Email <a href="mailto:hello@studenttutor.example?subject=Report%20a%20problem">hello@studenttutor.example</a>, or use Report a problem next to the lesson on the booking page, which fills in the lesson details for you.</p>
+          <p>We read every report. While we look into it we can hide a tutor from every parent at once. If a child may be in danger, call the police on 999 first.</p>
+        </section>
+
+        <section id="lessons" aria-labelledby="lessons-h">
+          <h2 id="lessons-h">Lesson rules</h2>
+          <ul>
+            <li>Every lesson is a one-hour video call on the tutor's Google Meet or Zoom link, shown only to the parent who booked it.</li>
+            <li>For children in Primary school, a parent or another adult stays within earshot during the lesson.</li>
+            <li>Cameras stay on, in a shared room at home, not a bedroom.</li>
+            <li>Tutors and students don't swap phone numbers or social media accounts. Anything about lessons goes through the parent.</li>
+            <li>Lessons are not recorded unless the parent and the tutor both agree first.</li>
+            <li>Tutors never ask a student for photos, money or to keep a secret from their parents.</li>
+          </ul>
+        </section>
+
+        <section id="tutors" aria-labelledby="tutors-h">
+          <h2 id="tutors-h">Who can tutor</h2>
+          <ul>
+            <li>Student tutors must be 13 or older.</li>
+            <li>A tutor aged 13 to 17 needs a parent or guardian to agree first. We send them a private link, they read what tutoring here involves, and they agree in their own name.</li>
+            <li>Parents see only the first name of a tutor under 18, with their school year, subjects and rate.</li>
+            <li>A person on our team checks every tutor's report card against the results they claim before parents can see them.</li>
+          </ul>
+        </section>
+
+        <section id="privacy" aria-labelledby="privacy-h">
+          <h2 id="privacy-h">Your personal data</h2>
+          <p>We follow Singapore's Personal Data Protection Act. We keep only what we need to run bookings and keep lessons safe.</p>
+          <h3>What we keep</h3>
+          <ul>
+            <li><strong>Every account:</strong> your name, email and whether you're a parent or a student tutor.</li>
+            <li><strong>Parents:</strong> each booking, with your child's name, level and any note you add. Children don't have their own accounts.</li>
+            <li><strong>Student tutors:</strong> your profile, your video call link, your age group, and your report card until you're approved. For tutors under 18, your parent or guardian's name, phone or email, and when they agreed.</li>
+          </ul>
+          <h3>Report cards</h3>
+          <p>Cover your NRIC or birth certificate number before you upload. Only you and our checking team can open the file, and we delete it once you're approved.</p>
+          <h3>Who sees what</h3>
+          <ul>
+            <li>Parents see approved tutors' public profiles. A tutor sees the parent's name, the child's name and level for lessons booked with them.</li>
+            <li>We don't sell your data or use it for advertising.</li>
+            <li>Our data is stored with Supabase, our database provider.</li>
+          </ul>
+          <h3>Children under 13</h3>
+          <p>A parent makes every booking for a child, so the parent gives consent for the child's details.</p>
+          <h3>Seeing, correcting or deleting your data</h3>
+          <p>Email our Data Protection Officer at <a href="mailto:hello@studenttutor.example?subject=Personal%20data%20request">hello@studenttutor.example</a> to see what we hold, correct it, withdraw consent or close your account. We reply within 30 days. If we ever have a data breach that could harm you, we'll tell you and the Personal Data Protection Commission.</p>
+        </section>
+
+        <section id="terms" aria-labelledby="terms-h">
+          <h2 id="terms-h">Terms</h2>
+          <ul>
+            <li>Student Tutor helps parents find and book student tutors. Tutors are independent and aren't employed by Student Tutor.</li>
+            <li>Lesson fees are agreed between the parent and the tutor at the rate shown. Student Tutor doesn't take payments on this site.</li>
+            <li>Either side can cancel a lesson on the booking page before it starts.</li>
+            <li>Tutors keep to the lesson rules above. We may hide or close the account of anyone who breaks them.</li>
+            <li>Tutors under 18 use Student Tutor with their parent or guardian's agreement, and that parent or guardian accepts these terms for them.</li>
+          </ul>
+          <p class="doc__updated">Last updated 26 November 2026.</p>
+        </section>
+      </article>
+    </div>
+  </main>
+
+  <footer class="app__foot">
+    <a href="./book.html">Booking page</a>
+    <a href="mailto:hello@studenttutor.example?subject=Report%20a%20problem">Report a problem</a>
+  </footer>
+</body>
+</html>

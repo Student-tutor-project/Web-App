@@ -59,13 +59,14 @@ if (!supabase) {
 function route(u) {
   user = u;
   const who = $(".bar__who");
-  if (!u) { role = null; who.hidden = true; show("out"); return; }
+  if (!u) { role = null; who.hidden = true; $(".bar__admin").hidden = true; show("out"); return; }
   role = u.user_metadata?.role === "tutor" ? "tutor" : "parent";   // older "student" accounts book like parents
   const first = (u.user_metadata?.full_name || "").split(" ")[0];
   who.hidden = !first;
   who.textContent = first ? `${first}, ${role === "tutor" ? "student tutor" : "parent"}` : "";
   week = 0;
   show(role);
+  supabase.rpc("is_admin").then(({ data }) => { $(".bar__admin").hidden = !data; });
   (role === "tutor" ? Tutor : Parent).load();
 }
 
@@ -125,7 +126,7 @@ function renderLessons(el, rows, side) {
   el.innerHTML = upcoming.map((b) => {
     const at = new Date(b.starts_at);
     const who = side === "parent"
-      ? `<strong>${esc(b.subject)} with ${esc(b.tutor_profiles?.full_name || "your tutor")}</strong><span>For ${esc(b.child_name)}, ${esc(b.level)}</span>`
+      ? `<strong>${esc(b.subject)} with ${esc(b.tutor_profiles?.display_name || "your tutor")}</strong><span>For ${esc(b.child_name)}, ${esc(b.level)}</span>`
       : `<strong>${esc(b.subject)} for ${esc(b.child_name)}, ${esc(b.level)}</strong><span>Booked by ${esc(b.parent_name || "a parent")}</span>`;
     const note = b.note ? `<span class="lesson__note">"${esc(b.note)}"</span>` : "";
     const link = b.meeting_link
@@ -136,9 +137,17 @@ function renderLessons(el, rows, side) {
     return `<li class="lesson">
       <p class="lesson__when">${fLong.format(at)}<span>${timeRange(at, b.minutes)}, online</span></p>
       <p class="lesson__what">${who}${note}</p>
-      <div class="lesson__acts">${link}<button type="button" class="btn btn--quiet btn--small" data-cancel="${b.id}">Cancel lesson</button></div>
+      <div class="lesson__acts">${link}<button type="button" class="btn btn--quiet btn--small" data-cancel="${b.id}">Cancel lesson</button>
+        <a class="lesson__report" href="${reportHref(b, at)}">Report a problem</a></div>
     </li>`;
   }).join("");
+}
+// a prefilled email to the team about one lesson
+const REPORT_TO = "hello@studenttutor.example";
+function reportHref(b, at) {
+  const subject = `Report a problem: lesson on ${fLong.format(at)}`;
+  const body = `Lesson: ${b.subject} for ${b.child_name}, ${fLong.format(at)}, ${timeRange(at, b.minutes)}\nLesson reference: ${b.id}\n\nWhat happened:\n`;
+  return `mailto:${REPORT_TO}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 }
 async function cancelLesson(id, after) {
   if (!confirm("Cancel this lesson? The hour opens up for booking again.")) return;
@@ -163,9 +172,9 @@ const Parent = (() => {
   async function load() {
     if (!wired) wire();
     const [t, s, b] = await Promise.all([
-      supabase.from("tutor_profiles").select("*"),
+      supabase.from("tutor_profiles").select("id, display_name, school, about, subjects, stages, rate, status").eq("status", "approved"),   // only checked tutors are listed
       supabase.from("slots").select("*").eq("booked", false).gt("starts_at", new Date().toISOString()).lt("starts_at", weekEnd().toISOString()).order("starts_at"),
-      supabase.from("bookings").select("*, tutor_profiles(full_name)").eq("parent_id", user.id),
+      supabase.from("bookings").select("*, tutor_profiles(display_name)").eq("parent_id", user.id),
     ]);
     const fail = t.error || s.error || b.error;
     if (fail) { picks.innerHTML = `<p class="picks__empty">${esc(explain(fail))}</p>`; return; }
@@ -179,7 +188,7 @@ const Parent = (() => {
   function matching() {
     return tutors.filter((t) => (!filter.subject || t.subjects.includes(filter.subject)) && (!filter.level || t.stages.includes(stageOf(filter.level))))
       .map((t) => ({ t, next: slots.find((s) => s.tutor_id === t.id) }))
-      .sort((a, b) => (a.next ? 0 : 1) - (b.next ? 0 : 1) || (a.next?.starts_at || "").localeCompare(b.next?.starts_at || "") || a.t.full_name.localeCompare(b.t.full_name));
+      .sort((a, b) => (a.next ? 0 : 1) - (b.next ? 0 : 1) || (a.next?.starts_at || "").localeCompare(b.next?.starts_at || "") || a.t.display_name.localeCompare(b.t.display_name));
   }
 
   function renderList() {
@@ -194,7 +203,8 @@ const Parent = (() => {
       const meta = [t.school, t.subjects.join(", "), t.stages.join(" and ")].filter(Boolean).join(", ");
       const when = next ? `Next open: ${fLong.format(new Date(next.starts_at))}, ${hourLabel(new Date(next.starts_at).getHours())}` : "No open hours in the next four weeks";
       return `<button type="button" class="pick" role="radio" aria-checked="${tutor?.id === t.id}" data-tutor="${t.id}">
-        <span class="pick__name">${esc(t.full_name)}</span><span class="pick__rate">S$${t.rate} an hour</span>
+        <span class="pick__name">${esc(t.display_name)}</span><span class="pick__rate">S$${t.rate} an hour</span>
+        <span class="pick__check">Grades checked</span>
         <span class="pick__meta">${esc(meta)}</span>
         ${t.about ? `<span class="pick__about">${esc(t.about)}</span>` : ""}
         <span class="pick__next${next ? "" : " is-none"}">${when}</span>
@@ -205,7 +215,7 @@ const Parent = (() => {
   function renderTimes() {
     renderWeekNav(root);
     tt.classList.toggle("is-off", !tutor);
-    ttH.textContent = tutor ? `${tutor.full_name}'s open hours` : "Choose a tutor to see their hours";
+    ttH.textContent = tutor ? `${tutor.display_name}'s open hours` : "Choose a tutor to see their hours";
     const open = new Map(slots.filter((s) => tutor && s.tutor_id === tutor.id).map((s) => [new Date(s.starts_at).toISOString(), s]));
     renderTimetable(tt, (at) => {
       const s = open.get(keyOf(at));
@@ -232,7 +242,7 @@ const Parent = (() => {
     if (!s) return;
     picked = s;
     const d = new Date(s.starts_at);
-    $(".confirm__h", form).textContent = `${fLong.format(d)}, ${timeRange(d, s.minutes)}, with ${tutor.full_name}`;
+    $(".confirm__h", form).textContent = `${fLong.format(d)}, ${timeRange(d, s.minutes)}, with ${tutor.display_name}`;
     const subjects = filter.subject && tutor.subjects.includes(filter.subject) ? [filter.subject, ...tutor.subjects.filter((x) => x !== filter.subject)] : tutor.subjects;
     form.subject.innerHTML = subjects.map((x) => `<option>${esc(x)}</option>`).join("");
     if (filter.level) form.level.value = filter.level;
@@ -273,7 +283,7 @@ const Parent = (() => {
       });
       btn.disabled = false; btn.textContent = label;
       if (error) { err.textContent = explain(error); err.hidden = false; if (/taken/i.test(error.message)) { picked = null; load(); } return; }
-      const d = new Date(picked.starts_at), name = tutor.full_name;
+      const d = new Date(picked.starts_at), name = tutor.display_name;
       picked = null;
       form.reset();
       form.hidden = true;
@@ -286,6 +296,7 @@ const Parent = (() => {
       form.after(note);
     });
   }
+
 
   return { load };
 })();
@@ -301,19 +312,29 @@ const Tutor = (() => {
   const ttErr = $(".tt-error", root), gate = $(".tt-gate", root);
   let profile = null, mine = [], bookings = [], busy = new Set(), wired = false;
 
+  // the full profile row comes through a function: parents can only read the public columns
+  const readProfile = async () => {
+    const { data, error } = await supabase.rpc("my_tutor_profile");
+    return { data: data?.[0] || null, error };
+  };
+
   async function load() {
     if (!wired) wire();
-    const [p, l, s, b] = await Promise.all([
-      supabase.from("tutor_profiles").select("*").eq("id", user.id).maybeSingle(),
+    const [p, l, s, b, g] = await Promise.all([
+      readProfile(),
       supabase.from("tutor_private").select("*").eq("id", user.id).maybeSingle(),
       supabase.from("slots").select("*").eq("tutor_id", user.id).gt("starts_at", startOfToday().toISOString()).order("starts_at"),
       supabase.from("bookings").select("*").eq("tutor_id", user.id),
+      supabase.from("guardian_requests").select("token, guardian_name, guardian_contact, agreed_at").eq("tutor_id", user.id).order("created_at", { ascending: false }).limit(1),
     ]);
     const fail = p.error || l.error || s.error || b.error;
     if (fail) { ttErr.textContent = explain(fail); ttErr.hidden = false; return; }
-    profile = p.data; mine = s.data; bookings = b.data;
+    profile = p.data; mine = s.data; bookings = b.data; myLink = l.data?.meeting_link || "";
+    request = g.data?.[0] || null;
     fillForm(profile, l.data);
     renderTimes();
+    await loadFiles();
+    renderCheck();
     renderLessons($('[data-lessons="tutor"]'), bookings, "tutor");
   }
 
@@ -363,6 +384,7 @@ const Tutor = (() => {
 
   function wire() {
     wired = true;
+    wireCheck();
     $$("[data-multi] .chip", form).forEach((c) => c.addEventListener("click", () => {
       c.setAttribute("aria-checked", String(c.getAttribute("aria-checked") !== "true"));
       err.hidden = true; saved.hidden = true;
@@ -375,7 +397,7 @@ const Tutor = (() => {
       e.preventDefault();
       saved.hidden = true;
       const row = {
-        id: user.id, full_name: form.full_name.value.trim(), school: form.school.value.trim(), about: form.about.value.trim(),
+        full_name: form.full_name.value.trim(), school: form.school.value.trim(), about: form.about.value.trim(),
         subjects: picked("subjects"), stages: picked("stages"), rate: Number(form.rate.value), updated_at: new Date().toISOString(),
       };
       const link = form.meeting_link.value.trim();
@@ -389,16 +411,193 @@ const Tutor = (() => {
       err.hidden = true;
       const btn = $('[type="submit"]', form), label = btn.textContent;
       btn.disabled = true; btn.textContent = "Saving…";
-      const a = await supabase.from("tutor_profiles").upsert(row).select().single();
+      const a = profile
+        ? await supabase.from("tutor_profiles").update(row).eq("id", user.id)
+        : await supabase.from("tutor_profiles").insert({ id: user.id, ...row });
       const b = a.error ? a : await supabase.from("tutor_private").upsert({ id: user.id, meeting_link: link });
+      const c = a.error || b.error ? {} : await readProfile();
       btn.disabled = false; btn.textContent = label;
-      if (a.error || b.error) { err.textContent = explain(a.error || b.error); err.hidden = false; return; }
+      if (a.error || b.error || c.error) { err.textContent = explain(a.error || b.error || c.error); err.hidden = false; return; }
       const first = !profile;
-      profile = a.data;
+      profile = c.data;
+      myLink = link;
+      renderCheck();
       saved.textContent = !link ? "Profile saved. Add your video call link too, so parents can join your lessons."
         : first ? "Profile saved. Now tap the hours you can teach." : "Profile saved.";
       saved.hidden = false;
       renderTimes();
+    });
+  }
+
+  // ---- Get checked: report card, age, guardian consent, send for checking ----
+  const check = $(".check", root);
+  const checkErr = $(".error", check);
+  const fileInput = $(".file-btn__input", check);
+  const guardian = $(".guardian", check);
+  let files = [], myLink = "", age = null, request = null;
+  const STATUS = {
+    none: ["Get checked before parents can see you", "Save your profile first. Then upload your latest results and send them for checking."],
+    draft: ["Get checked before parents can see you", "A person on the Student Tutor team checks your results against your report card. Until then, parents can't see your profile or your hours."],
+    pending: ["Waiting for a check", "The team is checking your results. You can keep opening hours; parents see them once you're approved."],
+    approved: ["Grades checked", "Parents can see your profile and book your open hours."],
+    rejected: ["Not approved yet", "Fix what the note below says, then send it again."],
+  };
+  const editable = () => !!profile && (profile.status === "draft" || profile.status === "rejected");
+  const shown = (name) => name.replace(/^\d+-/, "");
+  const linkFor = (token) => new URL(`./consent.html?t=${token}`, location.href).href;
+  const fDay2 = new Intl.DateTimeFormat("en-SG", { day: "numeric", month: "long" });
+
+  async function loadFiles() {
+    const { data, error } = await supabase.storage.from("report-cards").list(user.id, { sortBy: { column: "created_at", order: "asc" } });
+    files = error ? [] : (data || []).filter((f) => f.name && !f.name.startsWith("."));
+  }
+
+  function renderGuardian() {
+    const minor = age === "13-17";
+    guardian.hidden = !profile || !minor || (!editable() && !profile.guardian_name);
+    if (guardian.hidden) return;
+    $("#g-name").value ||= profile.guardian_name || "";
+    $("#g-contact").value ||= profile.guardian_contact || "";
+    const agreed = profile.guardian_consent && profile.age_band === "13-17";
+    const state = $(".guardian__state", guardian);
+    guardian.classList.toggle("is-agreed", agreed);
+    state.textContent = agreed
+      ? `${profile.guardian_consent_name} agreed on ${fDay2.format(new Date(profile.guardian_consent_at))}.`
+      : request && !request.agreed_at ? `Waiting for ${request.guardian_name} to open the link and agree.` : "";
+    state.hidden = !state.textContent;
+    const waiting = !agreed && request && !request.agreed_at;
+    $("[data-guardian-link]", guardian).textContent = waiting ? "Make a new link" : "Make the link for your parent";
+    $("[data-guardian-link]", guardian).hidden = agreed;
+    $("[data-guardian-refresh]", guardian).hidden = !waiting;
+    const share = $(".guardian__share", guardian);
+    share.hidden = !waiting || !editable();
+    if (waiting) {
+      const url = linkFor(request.token);
+      const msg = `Hi, I'd like to tutor younger students online on Student Tutor. Please read this and agree if you're happy for me to: ${url}`;
+      $("#g-link").value = url;
+      $("[data-wa]", guardian).href = `https://wa.me/?text=${encodeURIComponent(msg)}`;
+      const mail = $("[data-mail]", guardian), email = request.guardian_contact.includes("@") ? request.guardian_contact : "";
+      mail.hidden = !email;
+      if (email) mail.href = `mailto:${encodeURIComponent(email)}?subject=${encodeURIComponent("Please agree to my tutoring on Student Tutor")}&body=${encodeURIComponent(msg)}`;
+    }
+  }
+
+  function renderCheck() {
+    const status = profile ? profile.status : "none";
+    check.dataset.status = status;
+    const [h, text] = STATUS[status];
+    $(".check__h", check).textContent = h;
+    $(".check__text", check).textContent = text;
+    const note = $(".check__note", check);
+    note.hidden = !(status === "rejected" && profile.review_note);
+    note.textContent = profile?.review_note ? `Note from the team: ${profile.review_note}` : "";
+    $(".check__body", check).hidden = status === "none" || status === "approved";
+    $$("[data-editable]", check).forEach((el) => { el.hidden = !editable(); });
+    if (age === null && profile?.age_band) age = profile.age_band;
+    $$("[data-age] .chip", check).forEach((c) => c.setAttribute("aria-checked", String(c.dataset.value === age)));
+    $(".age-stop", check).hidden = age !== "u13" || !editable();
+    $("[data-submit-check]", check).hidden = !editable() || age === "u13";
+    renderGuardian();
+    const list = $(".files", check);
+    list.innerHTML = files.length
+      ? files.map((f) => `<li class="file"><button type="button" class="file__open" data-open="${esc(f.name)}">${esc(shown(f.name))}</button>${editable() ? `<button type="button" class="file__drop" data-drop="${esc(f.name)}" aria-label="Take off ${esc(shown(f.name))}">Take off</button>` : ""}</li>`).join("")
+      : `<li class="files__empty">${editable() ? "No file yet. Upload your latest report card or results slip." : "No file uploaded."}</li>`;
+  }
+
+  async function upload(file) {
+    checkErr.hidden = true;
+    if (!file) return;
+    if (file.size > 10 * 1024 * 1024) { checkErr.textContent = "That file is over 10 MB. Use a smaller PDF or a photo."; checkErr.hidden = false; return; }
+    const safe = file.name.replace(/[^\w.-]+/g, "-").slice(-80);
+    const label = $(".file-btn", check);
+    label.classList.add("is-busy");
+    const { error } = await supabase.storage.from("report-cards").upload(`${user.id}/${Date.now()}-${safe}`, file, { contentType: file.type });
+    label.classList.remove("is-busy");
+    fileInput.value = "";
+    if (error) { checkErr.textContent = /mime|type/i.test(error.message) ? "Upload a PDF or a photo (JPG, PNG, WEBP or HEIC)." : explain(error); checkErr.hidden = false; return; }
+    await loadFiles(); renderCheck();
+  }
+
+  // saving the age band; a change of band clears any guardian consent (the database does this too)
+  async function saveAge(value) {
+    age = value; checkErr.hidden = true;
+    if (value !== "u13" && profile && profile.age_band !== value) {
+      const { error } = await supabase.from("tutor_profiles").update({ age_band: value }).eq("id", user.id);
+      if (error) { checkErr.textContent = explain(error); checkErr.hidden = false; return; }
+      const r = await readProfile(); if (r.data) profile = r.data;
+      request = null;
+    }
+    renderCheck();
+  }
+
+  async function makeLink() {
+    checkErr.hidden = true;
+    const name = $("#g-name").value.trim(), contact = $("#g-contact").value.trim();
+    if (!name || !contact) { checkErr.textContent = "Add your parent or guardian's name and their phone or email."; checkErr.hidden = false; return; }
+    const btn = $("[data-guardian-link]", guardian);
+    btn.disabled = true;
+    const { data: token, error } = await supabase.rpc("request_guardian_consent", { p_name: name, p_contact: contact });
+    btn.disabled = false;
+    if (error) { checkErr.textContent = explain(error); checkErr.hidden = false; return; }
+    request = { token, guardian_name: name, guardian_contact: contact, agreed_at: null };
+    const r = await readProfile(); if (r.data) profile = r.data;
+    renderCheck();
+    $("#g-link").select();
+  }
+
+  async function refreshConsent() {
+    const r = await readProfile(); if (r.data) profile = r.data;
+    if (profile.guardian_consent) request = { ...request, agreed_at: profile.guardian_consent_at };
+    renderCheck();
+    if (!profile.guardian_consent) { checkErr.textContent = "They haven't agreed yet. Check that they got the link."; checkErr.hidden = false; }
+  }
+
+  async function submitCheck() {
+    checkErr.hidden = true;
+    let msg = "";
+    if (!profile) msg = "Save your profile first.";
+    else if (!myLink) msg = "Add your video call link to your profile and save it first.";
+    else if (!files.length) msg = "Upload your latest report card or results slip first.";
+    else if (!age) msg = "Tell us how old you are.";
+    else if (age === "13-17" && !profile.guardian_consent) msg = "Your parent or guardian has to open the link and agree first.";
+    if (msg) { checkErr.textContent = msg; checkErr.hidden = false; return; }
+    const btn = $("[data-submit-check]", check);
+    btn.disabled = true; btn.textContent = "Sending…";
+    const { error } = await supabase.from("tutor_profiles").update({ status: "pending" }).eq("id", user.id);
+    const r = error ? {} : await readProfile();
+    btn.disabled = false; btn.textContent = "Send for checking";
+    if (error || r.error) { checkErr.textContent = explain(error || r.error); checkErr.hidden = false; return; }
+    profile = r.data;
+    renderCheck();
+    check.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function wireCheck() {
+    fileInput.addEventListener("change", () => upload(fileInput.files?.[0]));
+    $("[data-age]", check).addEventListener("click", (e) => {
+      const c = e.target.closest(".chip"); if (c && editable()) saveAge(c.dataset.value);
+    });
+    $("[data-guardian-link]", guardian).addEventListener("click", makeLink);
+    $("[data-guardian-refresh]", guardian).addEventListener("click", refreshConsent);
+    $("[data-copy-link]", guardian).addEventListener("click", async (e) => {
+      const b = e.currentTarget;
+      try { await navigator.clipboard.writeText($("#g-link").value); b.textContent = "Copied"; }
+      catch { $("#g-link").select(); b.textContent = "Press Ctrl+C to copy"; }
+      setTimeout(() => { b.textContent = "Copy link"; }, 2000);
+    });
+    $("[data-submit-check]", check).addEventListener("click", submitCheck);
+    $(".files", check).addEventListener("click", async (e) => {
+      const open = e.target.closest("[data-open]"), drop = e.target.closest("[data-drop]");
+      if (open) {
+        const win = window.open("", "_blank");
+        const { data } = await supabase.storage.from("report-cards").createSignedUrl(`${user.id}/${open.dataset.open}`, 120);
+        if (data?.signedUrl && win) win.location = data.signedUrl; else win?.close();
+      }
+      if (drop) {
+        const { error } = await supabase.storage.from("report-cards").remove([`${user.id}/${drop.dataset.drop}`]);
+        if (error) { checkErr.textContent = explain(error); checkErr.hidden = false; return; }
+        await loadFiles(); renderCheck();
+      }
     });
   }
 

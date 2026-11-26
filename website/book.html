@@ -19,6 +19,7 @@
     </a>
     <nav class="bar__nav" aria-label="Main">
       <a href="./">Home</a>
+      <a class="bar__admin" href="./admin.html" hidden>Tutor checks</a>
       <span class="bar__who" hidden></span>
       <button type="button" class="bar__login" data-account="login">Log in</button>
     </nav>
@@ -170,6 +171,63 @@
         <p>Tap an hour to open it for booking, tap it again to close it. Every lesson is a one-hour video call on your own Google Meet or Zoom link.</p>
       </div>
 
+      <section class="check" data-status="none" aria-labelledby="check-h">
+        <div class="check__status">
+          <h2 id="check-h" class="check__h">Get checked before parents can see you</h2>
+          <p class="check__text"></p>
+          <p class="check__note" hidden></p>
+        </div>
+        <div class="check__body">
+          <div class="field">
+            <span class="field__label" id="files-l">Your latest report card or results slip</span>
+            <ul class="files" aria-labelledby="files-l"></ul>
+            <label class="btn btn--quiet btn--small file-btn" data-editable>
+              Upload a file
+              <input type="file" class="file-btn__input" accept="application/pdf,image/jpeg,image/png,image/webp,image/heic" />
+            </label>
+            <span class="field__hint" data-editable>A PDF or a photo, up to 10 MB. Cover your NRIC or birth certificate number first, by cropping it out or putting a sticky note over it. Only you and the Student Tutor team can see the file, and we delete it once you're approved.</span>
+          </div>
+          <div class="field" data-editable>
+            <span class="field__label" id="age-l">How old are you?</span>
+            <div class="chips" role="radiogroup" aria-labelledby="age-l" data-age>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="u13">Under 13</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="13-17">13 to 17</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="18+">18 or older</button>
+            </div>
+            <p class="age-stop" hidden>You need to be 13 or older to tutor on Student Tutor. Keep your account, and come back to send your profile once you turn 13.</p>
+          </div>
+          <div class="guardian" hidden>
+            <p class="guardian__intro">Because you're under 18, a parent or guardian has to agree before parents can book you. We'll make a private link for them to open.</p>
+            <div class="field-row" data-editable>
+              <div class="field">
+                <label class="field__label" for="g-name">Parent or guardian's name</label>
+                <input id="g-name" maxlength="80" autocomplete="off" />
+              </div>
+              <div class="field">
+                <label class="field__label" for="g-contact">Their phone or email</label>
+                <input id="g-contact" maxlength="120" autocomplete="off" />
+              </div>
+            </div>
+            <p class="guardian__state" role="status"></p>
+            <div class="guardian__acts" data-editable>
+              <button type="button" class="btn btn--quiet btn--small" data-guardian-link>Make the link for your parent</button>
+              <button type="button" class="btn btn--quiet btn--small" data-guardian-refresh hidden>Check if they've agreed</button>
+            </div>
+            <div class="guardian__share" hidden>
+              <label class="field__label" for="g-link">Send this link to them</label>
+              <input id="g-link" readonly />
+              <div class="guardian__acts">
+                <button type="button" class="btn btn--quiet btn--small" data-copy-link>Copy link</button>
+                <a class="btn btn--quiet btn--small" data-wa target="_blank" rel="noopener">Send on WhatsApp</a>
+                <a class="btn btn--quiet btn--small" data-mail hidden>Send by email</a>
+              </div>
+            </div>
+          </div>
+          <p class="error" role="alert" hidden></p>
+          <button type="button" class="btn btn--primary" data-submit-check data-editable>Send for checking</button>
+        </div>
+      </section>
+
       <div class="desk">
         <form class="profile" novalidate>
           <h2 class="find__h">Your profile</h2>
@@ -177,6 +235,7 @@
           <div class="field">
             <label class="field__label" for="t-name">Name shown to parents</label>
             <input id="t-name" name="full_name" autocomplete="name" maxlength="80" />
+            <span class="field__hint">If you're under 18, parents see only your first name.</span>
           </div>
           <div class="field">
             <label class="field__label" for="t-school">School and year</label>
@@ -237,6 +296,11 @@
       </section>
     </section>
   </main>
+
+  <footer class="app__foot">
+    <a href="./safety.html">Safety, privacy and terms</a>
+    <a href="mailto:hello@studenttutor.example?subject=Report%20a%20problem">Report a problem</a>
+  </footer>
 
   <script type="module" src="/src/book-page.js"></script>
 </body>
