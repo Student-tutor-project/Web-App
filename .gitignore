@@ -15,3 +15,6 @@ Thumbs.db
 # local environment
 .env
 .env.local
+
+# local test logins (never commit)
+*.local.md

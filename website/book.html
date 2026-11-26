@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="en-SG">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Student Tutor: book an online lesson</title>
+  <meta name="description" content="Parents book an online lesson with a vetted student tutor. Student tutors set the hours they can teach." />
+  <meta name="theme-color" content="#141C22" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23141C22'/%3E%3Cpath d='M8 21 Q16 7 24 17' fill='none' stroke='%23A8D5F2' stroke-width='2.4' stroke-linecap='round'/%3E%3Ccircle cx='8' cy='21' r='3.6' fill='%23A8D5F2'/%3E%3Ccircle cx='24' cy='20' r='3.2' fill='none' stroke='%23A8D5F2' stroke-width='2'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet" />
+</head>
+<body class="app">
+  <header class="bar bar--solid">
+    <a class="brand" href="./" aria-label="Student Tutor, home">
+      <svg class="brand__mark" viewBox="0 0 40 28" aria-hidden="true"><path d="M7 20 Q20 2 33 15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="7" cy="20" r="4.5" fill="currentColor"/><circle cx="33" cy="19" r="4" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>
+      <span>Student Tutor</span>
+    </a>
+    <nav class="bar__nav" aria-label="Main">
+      <a href="./">Home</a>
+      <span class="bar__who" hidden></span>
+      <button type="button" class="bar__login" data-account="login">Log in</button>
+    </nav>
+  </header>
+
+  <dialog class="account" id="account" aria-labelledby="account-h">
+    <form class="account__form" novalidate>
+      <div class="account__head">
+        <h2 id="account-h">Log in</h2>
+        <button type="button" class="account__close" data-close aria-label="Close">
+          <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <div class="account__tabs" role="tablist" aria-label="Account">
+        <button type="button" role="tab" aria-selected="true" data-mode="login">Log in</button>
+        <button type="button" role="tab" aria-selected="false" data-mode="signup">Sign up</button>
+      </div>
+      <div class="field" data-only="signup">
+        <span class="field__label" id="role-l">I am a</span>
+        <div class="chips" role="radiogroup" aria-labelledby="role-l" data-name="role">
+          <button type="button" class="chip" role="radio" aria-checked="true" data-value="parent">Parent</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="tutor">Student tutor</button>
+        </div>
+      </div>
+      <div class="field" data-only="signup">
+        <label class="field__label" for="acc-name">Your name</label>
+        <input id="acc-name" name="name" autocomplete="name" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="acc-email">Email</label>
+        <input id="acc-email" name="email" type="email" inputmode="email" autocomplete="email" />
+      </div>
+      <div class="field">
+        <label class="field__label" for="acc-pass">Password</label>
+        <input id="acc-pass" name="password" type="password" autocomplete="current-password" />
+        <span class="field__hint" data-only="signup">At least 8 characters.</span>
+      </div>
+      <p class="error" role="alert" hidden></p>
+      <button type="submit" class="btn btn--primary account__submit">Log in</button>
+      <p class="account__switch"></p>
+    </form>
+    <div class="account__done" hidden tabindex="-1">
+      <h2 class="account__done-h">You're logged in</h2>
+      <p class="account__done-text"></p>
+      <div class="account__done-actions">
+        <button type="button" class="btn btn--primary" data-goto-book>Continue</button>
+        <button type="button" class="btn btn--quiet" data-close>Close</button>
+      </div>
+    </div>
+  </dialog>
+
+  <main class="app__main" id="main">
+    <!-- while the session loads -->
+    <section class="view" data-view="loading" aria-live="polite">
+      <p class="view__wait">Loading your account…</p>
+    </section>
+
+    <!-- signed out -->
+    <section class="view view--gate" data-view="out" hidden>
+      <h1>Log in to book a lesson</h1>
+      <p>Parents book online lessons here. Student tutors set the hours they can teach. Log in or create an account to start.</p>
+      <div class="view__actions">
+        <button type="button" class="btn btn--primary" data-account="login">Log in</button>
+        <button type="button" class="btn btn--quiet" data-account="signup" data-role="parent">Create an account</button>
+      </div>
+    </section>
+
+    <!-- parent: find a tutor, pick an hour, book -->
+    <section class="view" data-view="parent" hidden aria-labelledby="parent-h">
+      <div class="view__head">
+        <h1 id="parent-h">Book an online lesson</h1>
+        <p>Every lesson is a one-hour video call on Google Meet or Zoom. Choose a tutor, then tap a lit hour on their timetable.</p>
+      </div>
+
+      <div class="find">
+        <div class="find__filters">
+          <div class="field">
+            <span class="field__label" id="f-subj-l">Subject</span>
+            <div class="chips" role="radiogroup" aria-labelledby="f-subj-l" data-filter="subject">
+              <button type="button" class="chip" role="radio" aria-checked="true" data-value="">Any</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Maths">Maths</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Science">Science</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="English">English</button>
+              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Chinese">Chinese</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="f-level">Your child's level</label>
+            <select id="f-level" data-level-select></select>
+          </div>
+        </div>
+
+        <div class="find__body">
+          <div class="find__list">
+            <h2 class="find__h">Tutors</h2>
+            <div class="picks" role="radiogroup" aria-label="Tutors"></div>
+          </div>
+          <div class="find__times">
+            <div class="tt-head">
+              <h2 class="find__h" id="p-tt-h">Choose a tutor to see their hours</h2>
+              <div class="tt-nav">
+                <button type="button" class="btn btn--quiet btn--small" data-week="-1" aria-label="Earlier week">Earlier</button>
+                <button type="button" class="btn btn--quiet btn--small" data-week="1" aria-label="Later week">Later</button>
+              </div>
+            </div>
+            <div class="tt" data-tt="parent" aria-labelledby="p-tt-h"></div>
+            <p class="tt-key"><span class="tt-key__lit" aria-hidden="true"></span> Open hour, tap to book</p>
+
+            <form class="confirm" novalidate hidden>
+              <h3 class="confirm__h"></h3>
+              <div class="field-row">
+                <div class="field">
+                  <label class="field__label" for="c-child">Child's name</label>
+                  <input id="c-child" name="child" autocomplete="off" />
+                </div>
+                <div class="field">
+                  <label class="field__label" for="c-subject">Subject</label>
+                  <select id="c-subject" name="subject"></select>
+                </div>
+              </div>
+              <div class="field">
+                <label class="field__label" for="c-level">Level</label>
+                <select id="c-level" name="level" data-level-select></select>
+              </div>
+              <div class="field">
+                <label class="field__label" for="c-note">What should the tutor know? <span class="field__opt">(optional)</span></label>
+                <textarea id="c-note" name="note" rows="3" maxlength="280" placeholder="Topics to cover, a test coming up"></textarea>
+              </div>
+              <p class="error" role="alert" hidden></p>
+              <div class="step__nav">
+                <button type="button" class="btn btn--quiet" data-cancel-pick>Choose another hour</button>
+                <button type="submit" class="btn btn--primary">Book this lesson</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <section class="lessons" aria-labelledby="p-lessons-h">
+        <h2 id="p-lessons-h">Your lessons</h2>
+        <ul class="lessons__list" data-lessons="parent"></ul>
+      </section>
+    </section>
+
+    <!-- tutor: profile and teaching hours -->
+    <section class="view" data-view="tutor" hidden aria-labelledby="tutor-h">
+      <div class="view__head">
+        <h1 id="tutor-h">Your teaching hours</h1>
+        <p>Tap an hour to open it for booking, tap it again to close it. Every lesson is a one-hour video call on your own Google Meet or Zoom link.</p>
+      </div>
+
+      <div class="desk">
+        <form class="profile" novalidate>
+          <h2 class="find__h">Your profile</h2>
+          <p class="profile__hint">Parents see this before they book.</p>
+          <div class="field">
+            <label class="field__label" for="t-name">Name shown to parents</label>
+            <input id="t-name" name="full_name" autocomplete="name" maxlength="80" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="t-school">School and year</label>
+            <input id="t-school" name="school" maxlength="80" placeholder="JC2, or University, Year 1" />
+          </div>
+          <div class="field">
+            <span class="field__label" id="t-subj-l">Subjects you teach</span>
+            <div class="chips" role="group" aria-labelledby="t-subj-l" data-multi="subjects">
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="Maths">Maths</button>
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="Science">Science</button>
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="English">English</button>
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="Chinese">Chinese</button>
+            </div>
+          </div>
+          <div class="field">
+            <span class="field__label" id="t-stage-l">Levels you teach</span>
+            <div class="chips" role="group" aria-labelledby="t-stage-l" data-multi="stages">
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="Primary">Primary</button>
+              <button type="button" class="chip" role="checkbox" aria-checked="false" data-value="Secondary">Secondary</button>
+            </div>
+          </div>
+          <div class="field">
+            <label class="field__label" for="t-rate">Rate, in S$ an hour</label>
+            <input id="t-rate" name="rate" type="number" inputmode="numeric" min="10" max="200" step="1" />
+          </div>
+          <div class="field">
+            <label class="field__label" for="t-link">Video call link, Google Meet or Zoom</label>
+            <input id="t-link" name="meeting_link" type="url" inputmode="url" autocomplete="off" placeholder="https://meet.google.com/abc-defg-hij" />
+            <span class="field__hint">Make one link you can reuse for every lesson. Google Meet: on meet.google.com choose New meeting, then Create a meeting for later. Zoom: copy your Personal Meeting Room link from your Zoom profile. Only parents who have booked you see it.</span>
+          </div>
+          <div class="field">
+            <label class="field__label" for="t-about">About you <span class="field__opt">(optional)</span></label>
+            <textarea id="t-about" name="about" rows="3" maxlength="280" placeholder="Your results in these subjects, and how you like to teach"></textarea>
+          </div>
+          <p class="error" role="alert" hidden></p>
+          <p class="saved" role="status" hidden></p>
+          <button type="submit" class="btn btn--primary">Save profile</button>
+        </form>
+
+        <div class="desk__times">
+          <div class="tt-head">
+            <h2 class="find__h" id="t-tt-h">Your week</h2>
+            <div class="tt-nav">
+              <button type="button" class="btn btn--quiet btn--small" data-week="-1" aria-label="Earlier week">Earlier</button>
+              <button type="button" class="btn btn--quiet btn--small" data-week="1" aria-label="Later week">Later</button>
+            </div>
+          </div>
+          <p class="tt-gate" hidden>Save your profile first, then tap the hours you can teach.</p>
+          <div class="tt" data-tt="tutor" aria-labelledby="t-tt-h"></div>
+          <p class="tt-key"><span class="tt-key__lit" aria-hidden="true"></span> Open for booking <span class="tt-key__booked" aria-hidden="true"></span> Booked</p>
+          <p class="error tt-error" role="alert" hidden></p>
+        </div>
+      </div>
+
+      <section class="lessons" aria-labelledby="t-lessons-h">
+        <h2 id="t-lessons-h">Booked lessons</h2>
+        <ul class="lessons__list" data-lessons="tutor"></ul>
+      </section>
+    </section>
+  </main>
+
+  <script type="module" src="/src/book-page.js"></script>
+</body>
+</html>

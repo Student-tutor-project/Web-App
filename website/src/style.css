@@ -50,6 +50,7 @@ body.stage-ready .stage-load, body.stage-failed .stage-load { opacity: 0; }
 .bar__nav a:not(.btn) { text-decoration: none; color: var(--text); opacity: .85; }
 .bar__nav a:not(.btn):hover { color: var(--text); }
 
+body:not(.signed-in) .bar__lessons { display: none; }
 .bar__login { background: none; border: 0; padding: 0 4px; min-height: 44px; color: var(--text); font: 500 16px/1 var(--font); cursor: pointer; }
 .bar__login:hover { color: var(--accent); }
 
@@ -283,3 +284,126 @@ body:not(.stage-ready) .sign, body.stage-failed .sign { display: none; }
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { transition-duration: 0s !important; scroll-behavior: auto !important; }
 }
+
+/* =====================================================================
+   Booking page (book.html): plain slate, no 3D. The one memorable element
+   is the week timetable, where open hours glow like windows in daylight.
+   ===================================================================== */
+.bar--solid { background: rgba(20,28,34,.96); border-bottom: 1px solid var(--line); }
+.bar__who { font-size: 14px; color: var(--muted); }
+.bar__who[hidden] { display: none; }
+.app__main { padding: 120px var(--gutter) 96px; max-width: 1320px; margin: 0 auto; }
+.view { display: grid; gap: 48px; }
+.view[hidden] { display: none; }
+.view__wait { color: var(--muted); }
+.view__head { display: grid; gap: 14px; max-width: 40rem; }
+.view__head h1, .view--gate h1 { font-size: 60px; line-height: 1.04; letter-spacing: -0.025em; }
+.view__head p, .view--gate p { color: #D3DCE0; font-size: 18px; }
+.view--gate { max-width: 40rem; gap: 20px; padding-top: 8vh; }
+.view__actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.find { display: grid; gap: 36px; }
+.find__filters { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 18rem); gap: 24px 40px; align-items: end;
+  padding-bottom: 8px; }
+.find__body, .desk { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 8fr); gap: 48px; align-items: start; }
+.find__h { font-family: var(--font); font-size: 18px; font-weight: 700; letter-spacing: 0; line-height: 1.3; }
+.find__list { display: grid; gap: 16px; }
+textarea { width: 100%; padding: 12px 14px; border-radius: var(--radius); border: 1px solid var(--line); background: var(--bg);
+  color: var(--text); font: 400 16px/1.5 var(--font); resize: vertical; }
+textarea:focus-visible { outline-offset: 0; border-color: var(--accent); }
+textarea::placeholder { color: #6A7A84; }
+.field__opt { font-weight: 400; }
+
+/* tutors: rows in one list, not a grid of cards */
+.picks { display: grid; border-top: 1px solid var(--line); }
+.pick { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; padding: 18px 16px; margin: 0 -16px; text-align: left;
+  background: none; border: 0; border-bottom: 1px solid var(--line); border-radius: 0; color: var(--text); font: inherit; cursor: pointer; }
+.pick:hover { background: rgba(29,40,48,.7); }
+.pick[aria-checked="true"] { background: var(--surface); box-shadow: inset 3px 0 0 var(--accent); }
+.pick__name { font-weight: 700; font-size: 18px; }
+.pick__rate { font-weight: 700; white-space: nowrap; }
+.pick__meta { grid-column: 1 / -1; font-size: 14px; color: var(--muted); }
+.pick__about { grid-column: 1 / -1; font-size: 14px; color: #D3DCE0; }
+.pick__next { grid-column: 1 / -1; font-size: 14px; color: var(--accent); }
+.pick__next.is-none { color: var(--muted); }
+.picks__empty { padding: 18px 0; color: var(--muted); }
+
+/* the timetable */
+.find__times, .desk__times { display: grid; gap: 16px; min-width: 0; }
+.tt-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.tt-nav { display: flex; gap: 8px; }
+.tt-nav .btn:disabled { opacity: .4; cursor: default; }
+.tt { display: grid; grid-template-columns: 44px repeat(7, minmax(0, 1fr)); gap: 4px; }
+.tt__day { padding: 0 0 8px; text-align: center; font-size: 14px; color: var(--muted); line-height: 1.25; }
+.tt__day strong { display: block; color: var(--text); font-size: 16px; }
+.tt__day.is-today strong { color: var(--accent); }
+.tt__hour { font-size: 12px; color: var(--muted); text-align: right; padding-right: 6px; align-self: center; }
+.tt__cell { min-height: 36px; border-radius: 4px; border: 1px solid var(--line); background: var(--bg); color: var(--text);
+  font: 500 12px/1 var(--font); padding: 0; cursor: pointer; transition: background-color .25s, border-color .25s, box-shadow .25s; }
+.tt__cell:hover:not(:disabled) { border-color: var(--muted); }
+.tt__cell:disabled { cursor: default; }
+.tt__cell.is-past { opacity: .35; }
+.tt__cell.is-open { background: linear-gradient(to bottom, #4A8DB5, #2F6F96); border-color: var(--accent); color: var(--text); box-shadow: 0 0 14px rgba(168,213,242,.3); }   /* a deep shade of the daylight accent: lit, not grey */
+.tt__cell.is-booked { background: var(--surface); border-color: var(--wall); color: var(--muted); }
+.tt__cell.is-picked { background: var(--accent); border-color: var(--accent); color: #0E2433; box-shadow: none; }
+.tt__cell.is-busy { opacity: .6; }
+.tt[data-tt="parent"] .tt__cell:not(.is-open):not(.is-picked) { border-color: rgba(44,58,68,.6); }
+.tt.is-off { opacity: .45; pointer-events: none; }
+.tt-key { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.tt-key__lit, .tt-key__booked { width: 16px; height: 12px; border-radius: 3px; border: 1px solid var(--accent); background: #3E80A8; }
+.tt-key__booked { margin-left: 12px; border-color: var(--wall); background: var(--surface); }
+.tt-gate { color: var(--text); font-size: 16px; }
+.tt-gate[hidden], .tt-error[hidden] { display: none; }
+
+/* booking an hour */
+.confirm { display: grid; gap: 20px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.confirm[hidden] { display: none; }
+.confirm__h { font-size: 24px; }
+.done-note { padding: 20px 24px; border-left: 3px solid var(--accent); background: var(--surface); }
+.done-note strong { display: block; margin-bottom: 4px; }
+
+/* tutor profile */
+.profile { display: grid; gap: 20px; padding: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.profile__hint { font-size: 14px; color: var(--muted); margin-top: -12px; }
+.saved { color: var(--accent); font-size: 16px; font-weight: 500; }
+.saved[hidden] { display: none; }
+.profile .btn { justify-self: start; }
+
+/* lessons: a plain ruled list */
+.lessons { display: grid; gap: 20px; padding-top: 40px; border-top: 1px solid var(--line); }
+.lessons h2 { font-size: 36px; }
+.lessons__list { list-style: none; margin: 0; padding: 0; display: grid; }
+.lesson { display: grid; grid-template-columns: minmax(10rem, 2fr) minmax(0, 4fr) auto; gap: 8px 32px; align-items: center;
+  padding: 20px 0; border-bottom: 1px solid var(--line); }
+.lesson:first-child { border-top: 1px solid var(--line); }
+.lesson__when { font-family: var(--font-head); font-size: 21px; line-height: 1.25; }
+.lesson__when span { display: block; font-family: var(--font); font-size: 14px; color: var(--muted); margin-top: 2px; }
+.lesson__what { display: grid; gap: 4px; }
+.lesson__what strong { font-size: 18px; }
+.lesson__what span { font-size: 14px; color: var(--muted); }
+.lesson__note { color: #D3DCE0 !important; }
+.lesson__acts { display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end; }
+.lessons__empty { color: var(--muted); padding: 4px 0; }
+
+@media (max-width: 900px) {
+  .find__body, .desk { grid-template-columns: minmax(0, 1fr); }
+  .desk.has-profile .desk__times { order: -1; }   /* once the profile exists, the week comes first */
+}
+@media (max-width: 768px) {
+  .app__main { padding-top: 96px; }
+  .view__head h1, .view--gate h1 { font-size: 36px; }
+  .find__filters { grid-template-columns: minmax(0, 1fr); }
+  .lesson { grid-template-columns: minmax(0, 1fr); }
+  .lesson__acts { justify-content: flex-start; }
+  .lessons h2 { font-size: 24px; }
+}
+@media (max-width: 440px) {
+  .tt { grid-template-columns: 30px repeat(7, minmax(0, 1fr)); gap: 3px; }
+  .tt__hour { padding-right: 2px; font-size: 12px; }
+  .tt__day { font-size: 12px; }
+  .tt__day strong { font-size: 14px; }
+  .tt__cell { min-height: 44px; }
+  .confirm, .profile { padding: 20px 16px; }
+  .bar__who { display: none; }
+}
+
+.lesson__opens { font-size: 14px; color: var(--muted); align-self: center; }

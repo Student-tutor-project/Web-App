@@ -54,12 +54,6 @@ export function initAccount({ lenis } = {}) {
     dlg.querySelectorAll("[data-name=role] .chip").forEach((c) => c.setAttribute("aria-checked", String(c.dataset.value === r)));
   }
 
-  function scrollToId(id, focusSel) {
-    const el = document.getElementById(id);
-    lenis ? lenis.scrollTo(el, { offset: -64 }) : el.scrollIntoView();
-    if (focusSel) setTimeout(() => document.querySelector(focusSel)?.focus({ preventScroll: true }), lenis ? 1250 : 0);
-  }
-
   function open(m, from) {
     opener = from || document.activeElement;
     form.hidden = false;
@@ -73,21 +67,25 @@ export function initAccount({ lenis } = {}) {
   function close() { dlg.close(); }
   dlg.addEventListener("close", () => { lenis?.start(); opener?.focus?.(); });
 
-  function showDone(heading, text, offerBooking) {
+  // the booking page: parents book there, student tutors set their hours there
+  const onBookPage = !!document.querySelector('[data-view="parent"]');
+  const goBook = () => { if (!onBookPage) location.href = "./book.html"; };
+
+  function showDone(heading, text, isParent) {
     form.hidden = true;
     done.hidden = false;
     done.querySelector(".account__done-h").textContent = heading;
     done.querySelector(".account__done-text").textContent = text;
-    done.querySelector("[data-goto-book]").hidden = !offerBooking;
+    const go = done.querySelector("[data-goto-book]");
+    go.hidden = isParent === null;                             // still waiting on the email link
+    go.textContent = isParent ? "Book a lesson" : "Set your teaching hours";
     done.focus();
   }
 
   document.querySelectorAll("[data-account]").forEach((b) => b.addEventListener("click", async () => {
     const what = b.dataset.account;
     if (what === "logout") { await supabase?.auth.signOut(); return; }
-    if (user && what === "signup") {                            // already signed in: go straight there
-      return b.dataset.role === "tutor" ? scrollToId("tutors") : scrollToId("book", "#book .chip");
-    }
+    if (user && what === "signup") return goBook();             // already signed in: go straight to booking
     // a seat in the 3D room: let the camera glide to it before the panel opens
     const glide = b.dataset.choice && document.body.classList.contains("stage-ready") && !matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (glide) setTimeout(() => open(what, b), 800);
@@ -97,10 +95,10 @@ export function initAccount({ lenis } = {}) {
   dlg.addEventListener("click", (e) => {
     if (e.target === dlg) return close();                       // click on the backdrop
     if (e.target.closest("[data-close]")) return close();
-    if (e.target.closest("[data-goto-book]")) {                  // hand the parent on to the booking flow
+    if (e.target.closest("[data-goto-book]")) {                  // on to the booking page
       opener = null;
       close();
-      setTimeout(() => scrollToId("book", "#book .chip"), 50);
+      goBook();
       return;
     }
     const m = e.target.closest("[data-mode]");
@@ -136,10 +134,10 @@ export function initAccount({ lenis } = {}) {
         form.reset();
         if (data.session) {
           showDone(`Welcome, ${name}`, role === "tutor"
-            ? "Your account is ready. Next, send us your subjects and results so we can check them."
+            ? "Your account is ready. Next, fill in your profile and open the hours you can teach."
             : "Your account is ready. Book a first lesson whenever you like.", role !== "tutor");
         } else {
-          showDone("Check your email", `We sent a link to ${email}. Open it to confirm your account, then log in.`, role !== "tutor");
+          showDone("Check your email", `We sent a link to ${email}. Open it to confirm your account, then log in.`, null);
         }
       } else {
         const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
@@ -148,7 +146,7 @@ export function initAccount({ lenis } = {}) {
         const meta = data.user?.user_metadata || {};
         const first = (meta.full_name || "").split(" ")[0];
         showDone(first ? `Welcome back, ${first}` : "You're logged in", meta.role === "tutor"
-          ? "You're logged in to your tutor account."
+          ? "You're logged in. Your teaching hours and booked lessons are on the booking page."
           : "You're logged in. Book a first lesson whenever you like.", meta.role !== "tutor");
       }
     } catch (ex) {
