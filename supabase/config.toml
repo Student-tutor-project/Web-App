@@ -1,0 +1,4 @@
+# Only the settings this repo relies on. The rest of the project lives in the Supabase dashboard.
+[functions.booking-emails]
+# The database trigger calls this with a shared secret header instead of a user JWT.
+verify_jwt = false

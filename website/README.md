@@ -48,7 +48,10 @@ In the Supabase dashboard (Authentication):
 
 ## Where a booking goes
 
-**Nowhere yet.** The contact details are placeholders, so finishing a booking only shows a
+Bookings made on `book.html` are stored in Supabase, and the parent and tutor get an email when a
+lesson is booked or cancelled (see `../supabase/README.md`).
+
+The homepage flow in `src/booking.js` still goes **nowhere yet**. The contact details are placeholders, so finishing a booking only shows a
 confirmation on the page, with a line saying bookings are not sent. Nothing is stored or emailed.
 The tutors in step 2 are sample profiles in `src/booking.js`.
 
