@@ -16,11 +16,10 @@ npm run preview    # check the built site over HTTP (never open dist/index.html 
 | Path | What it is |
 |---|---|
 | `index.html` | All page copy and sections |
-| `src/main.js` | Smooth scroll; starts the booking flow, the account panel and the 3D room |
+| `src/main.js` | Smooth scroll; starts the account panel and the 3D room |
 | `src/room.js` | The 3D room: layout, daylight, the ten chairs, the three choices and their floating signs, the scroll camera beats, the camera glide when a seat is chosen |
 | `src/city.js` | The futuristic city outside the glass, built in code: towers, halo rings, sky bridges, gliding craft, clouds |
 | `src/particles.js` | Dust in the sunlight |
-| `src/booking.js` | The booking steps, sample tutors, validation |
 | `src/account.js` | The Log in / Sign up panel, using Supabase Auth |
 | `src/supabase.js` | The shared Supabase client (reads `.env`) |
 | `src/style.css` | Brand tokens (top of file) and all layout |
@@ -48,19 +47,15 @@ In the Supabase dashboard (Authentication):
 
 ## Where a booking goes
 
-**Nowhere yet.** The contact details are placeholders, so finishing a booking only shows a
-confirmation on the page, with a line saying bookings are not sent. Nothing is stored or emailed.
-The tutors in step 2 are sample profiles in `src/booking.js`.
-
-To make bookings real, connect the submit handler in `src/booking.js` to a backend (for example
-Supabase) and replace the sample tutors with verified profiles.
+Every Book button on the homepage opens `book.html`. Parents log in there and book a real tutor's
+open hour, which is saved in Supabase (`book_slot` / `cancel_booking`). There are no booking
+emails yet.
 
 ## Placeholders to replace before launch
 
 - Email `hello@studenttutor.example`, WhatsApp `+65 0000 0000`, Instagram `@studenttutor`
   (in `index.html`, footer and the mailto links)
 - Starting prices S$20 (primary) and S$30 (secondary), in `index.html` and the meta description
-- Sample tutor profiles in `src/booking.js`
 
 ## Testing the fallback
 

@@ -92,7 +92,7 @@
         <h1>Tutoring from students who just aced it.</h1>
         <p>Take a seat to start. Student tutors take the tutor's chair, parents take the chair beside it for their child, and the laptop logs you in.</p>
         <div class="beat__actions">
-          <a class="btn btn--primary" href="#book">Book a tutor</a>
+          <a class="btn btn--primary" href="./book.html">Book a tutor</a>
         </div>
         <div class="seats" role="group" aria-label="Take a seat">
           <button type="button" class="sign" data-choice="tutor" data-account="signup" data-role="tutor">
@@ -122,7 +122,7 @@
         <h2>Book a first lesson in under a minute.</h2>
         <p>Pick the subject, the tutor and a time. That's it.</p>
         <div class="beat__actions">
-          <a class="btn btn--primary" href="#book">Book a tutor</a>
+          <a class="btn btn--primary" href="./book.html">Book a tutor</a>
         </div>
       </div>
     </section>
@@ -135,109 +135,6 @@
         <div><dt>Agency fee</dt><dd><span class="impact__num">S$0</span> on every lesson</dd></div>
       </dl>
       <p class="impact__note">Rates shown are starting prices. Each tutor sets their own, and you see it before you book.</p>
-    </section>
-
-    <section id="book" class="book stage-cover" aria-labelledby="book-h">
-      <div class="book__intro" id="how">
-        <h2 id="book-h">Book a first lesson</h2>
-        <p>Three steps. You can change anything before you confirm.</p>
-        <ol class="steps" aria-label="Booking steps">
-          <li class="steps__item is-current" data-step-dot="1"><span class="steps__dot" aria-hidden="true"></span><span>Subject and level</span></li>
-          <li class="steps__arc" aria-hidden="true"><svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 20 Q50 -6 98 20" /></svg></li>
-          <li class="steps__item" data-step-dot="2"><span class="steps__dot" aria-hidden="true"></span><span>Choose a tutor</span></li>
-          <li class="steps__arc" aria-hidden="true"><svg viewBox="0 0 100 24" preserveAspectRatio="none"><path d="M2 20 Q50 -6 98 20" /></svg></li>
-          <li class="steps__item" data-step-dot="3"><span class="steps__dot" aria-hidden="true"></span><span>Pick a time</span></li>
-        </ol>
-      </div>
-
-      <form class="book__panel" id="booking" novalidate>
-        <fieldset class="step is-active" data-step="1">
-          <legend>What does your child need help with?</legend>
-          <div class="field">
-            <span class="field__label" id="subj-l">Subject</span>
-            <div class="chips" role="radiogroup" aria-labelledby="subj-l" data-name="subject">
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Maths">Maths</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Science">Science</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="English">English</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="Chinese">Chinese</button>
-            </div>
-          </div>
-          <div class="field">
-            <label class="field__label" for="level">Level</label>
-            <select id="level" name="level">
-              <option value="">Choose a level</option>
-              <optgroup label="Primary">
-                <option>Primary 1</option><option>Primary 2</option><option>Primary 3</option>
-                <option>Primary 4</option><option>Primary 5</option><option>Primary 6</option>
-              </optgroup>
-              <optgroup label="Secondary">
-                <option>Secondary 1</option><option>Secondary 2</option><option>Secondary 3</option>
-                <option>Secondary 4</option><option>Secondary 5</option>
-              </optgroup>
-            </select>
-          </div>
-          <div class="field">
-            <span class="field__label" id="mode-l">Where</span>
-            <div class="chips" role="radiogroup" aria-labelledby="mode-l" data-name="mode">
-              <button type="button" class="chip" role="radio" aria-checked="true" data-value="Online">Online</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="In person">In person, in a public place</button>
-            </div>
-          </div>
-          <p class="error" role="alert" hidden></p>
-          <div class="step__nav"><button type="button" class="btn btn--primary" data-next>Show tutors</button></div>
-        </fieldset>
-
-        <fieldset class="step" data-step="2">
-          <legend>Choose a tutor</legend>
-          <p class="step__hint">Sample profiles while we prepare for launch.</p>
-          <div class="tutors" role="radiogroup" aria-label="Tutors"></div>
-          <p class="error" role="alert" hidden></p>
-          <div class="step__nav">
-            <button type="button" class="btn btn--quiet" data-back>Back</button>
-            <button type="button" class="btn btn--primary" data-next>Choose a time</button>
-          </div>
-        </fieldset>
-
-        <fieldset class="step" data-step="3">
-          <legend>Pick a time for the first lesson</legend>
-          <div class="field">
-            <span class="field__label" id="day-l">Day</span>
-            <div class="chips chips--days" role="radiogroup" aria-labelledby="day-l" data-name="day"></div>
-          </div>
-          <div class="field">
-            <span class="field__label" id="time-l">Time</span>
-            <div class="chips" role="radiogroup" aria-labelledby="time-l" data-name="time">
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="4:00 pm">4:00 pm</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="5:30 pm">5:30 pm</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="7:00 pm">7:00 pm</button>
-              <button type="button" class="chip" role="radio" aria-checked="false" data-value="8:30 pm">8:30 pm</button>
-            </div>
-          </div>
-          <div class="field-row">
-            <div class="field">
-              <label class="field__label" for="pname">Your name</label>
-              <input id="pname" name="name" autocomplete="name" />
-            </div>
-            <div class="field">
-              <label class="field__label" for="phone">WhatsApp number</label>
-              <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="8123 4567" />
-            </div>
-          </div>
-          <div class="summary" aria-live="polite"></div>
-          <p class="error" role="alert" hidden></p>
-          <div class="step__nav">
-            <button type="button" class="btn btn--quiet" data-back>Back</button>
-            <button type="submit" class="btn btn--primary">Book this lesson</button>
-          </div>
-        </fieldset>
-
-        <div class="step step--done" data-step="done" tabindex="-1">
-          <h3>Lesson booked</h3>
-          <p class="done__text"></p>
-          <p class="step__hint">This is a preview of Student Tutor. Bookings are not sent anywhere yet.</p>
-          <div class="step__nav"><button type="button" class="btn btn--quiet" data-restart>Book another lesson</button></div>
-        </div>
-      </form>
     </section>
 
     <section id="trust" class="trust" aria-labelledby="trust-h">
@@ -288,7 +185,7 @@
     <section class="cta" aria-labelledby="cta-h">
       <h2 id="cta-h">Find a tutor for this week.</h2>
       <p>Most first lessons can be booked for the next few days.</p>
-      <a class="btn btn--primary" href="#book">Book a tutor</a>
+      <a class="btn btn--primary" href="./book.html">Book a tutor</a>
     </section>
 
     <footer class="footer stage-cover">
