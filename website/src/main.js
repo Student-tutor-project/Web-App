@@ -2,7 +2,6 @@ import "./style.css";
 import Lenis from "lenis";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { initBooking } from "./booking.js";
 import { initAccount } from "./account.js";
 gsap.registerPlugin(ScrollTrigger);
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";   // the story always starts at beat one
@@ -20,10 +19,8 @@ document.querySelectorAll('a[href^="#"]').forEach((a) => a.addEventListener("cli
   if (!el) return;
   e.preventDefault();
   lenis.scrollTo(el, { offset: -64, duration: REDUCED ? 0 : 1.2 });
-  if (id === "#book") setTimeout(() => document.querySelector("#book .chip")?.focus({ preventScroll: true }), REDUCED ? 0 : 1250);
 }));
 
-initBooking();
 initAccount({ lenis });
 
 // three.js loads after the page text, so the poster and copy paint first.
